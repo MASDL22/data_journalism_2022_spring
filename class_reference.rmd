@@ -1,6 +1,6 @@
 ---
 title: "Class Reference"
-author: "Student name"
+author: "Marianeli De Leon"
 output:
   html_document:
     theme: cerulean
@@ -18,3 +18,18 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 Consider this my personal guide to the commands and functions you will learn. In general, when you come across an R command or function that you want to remember, put it in here along with a description of what it does and when you'd use it.
+```{r}
+ppp_maryland_loans %>%
+  group_by(project_county_name) %>%
+  summarise(
+    count_loans = n()
+  )
+```
+```{r}
+ppp_maryland_loans %>%
+  group_by(project_county_name) %>%
+  summarise(
+    count_loans = n()
+  ) %>%
+  arrange(desc(count_loans))
+```
