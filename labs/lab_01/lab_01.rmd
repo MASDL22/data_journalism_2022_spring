@@ -103,11 +103,11 @@ wv_ppp_loans %>%
 
 Store it as a variable object called `wv_summary` so that you can examine it with the data viewer. What newsworthy nuggets jump out at you that you could imagine dropping into a news story? Write a few summary sentences with overall findings.
 
-**A7** [write your answer here]
+**A7** [It appears that 33,336 PPP loans were given to WV businesses and the max amount of money they handed out was 8,912,202 dollars. The total amount of loans given to the whole state was 2,600,771,578 dollars. Yet it appears that the median loan of the state was 20832 dollars. Since the amount of loans seems very high, we could make a story on why certain businesses got more money than others or if there was a possible chance of fraud within the state. We could also see why certain cities would repeatedly get loans than other places or if the same company got multiple loans.	 ]
 ```{r}
-wv_summary<-
+wv_summary<- 
   wv_ppp_loans %>%
-  group_by(project_state) %>%
+  group_by(state) %>%
   summarise(
     count_loans = n(),
     total_loans_amount = sum(amount),
