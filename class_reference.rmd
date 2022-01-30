@@ -33,3 +33,6 @@ ppp_maryland_loans %>%
   ) %>%
   arrange(desc(count_loans))
 ```
+```{r}
+library(tidyverse)
+```

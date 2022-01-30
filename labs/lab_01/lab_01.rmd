@@ -61,15 +61,21 @@ Use the pre-lab and your reference notebook as examples.
 **A2** [write your answer here]
 
 ```{r}
-# Write the code to produce your answer here
-
+ppp_maryland_loans %>%
+  group_by(project_county_name) %>%
+  summarise(
+    count_loans = n()
+  )
 ```
 **Q3** Which West Virginia county got the fewest loans? How many?
 **A3** [write your answer here]
 
 ```{r}
-# Write the code to produce your answer here
-
+ppp_maryland_loans %>%
+  group_by(project_county_name) %>%
+  summarise(
+    count_loans = n()
+  )
 ```
 **Q4** What's your best educated guess to explain why the county identified in question 2 had a lot of loans and why the county identified in question 3 had only a few loans? Hint: you won't find the answer in the data, you'll need to do some quick web research. You do not need to write any code for this question, so no codeblock is provided.  
 **A4** [write your answer here]
