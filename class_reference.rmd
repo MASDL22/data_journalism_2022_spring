@@ -36,3 +36,15 @@ ppp_maryland_loans %>%
 ```{r}
 library(tidyverse)
 ```
+ arrange(max_loan_amount)=acsending order
+ command enter to read one line
+ 
+ # mutate(new column=value)
+ 
+ # "Maryland" is not "MARYLAND"
+ 
+ in_out in or out of somewhere
+ 
+ case_when= 
+ 
+ filter=limits data to just one thing
