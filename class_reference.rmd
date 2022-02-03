@@ -48,3 +48,14 @@ library(tidyverse)
  case_when= 
  
  filter=limits data to just one thing
+ 
+ filter(COLUMN_NAME OPERATOR CRITERIA)`
+ = assignment    == test if something has value
+ filter(amount == 10000) <>
+ 
+ maryland ppp<- maryland ppp %>% mutate (project_city =str_to_upper(project_city))
+ 
+  CleanDate = ymd_hms(date_approved) year,month,day_hour,minute,second
+  
+  floor_date=what each month
+  ceiling_date=rounds up by one month after
