@@ -59,35 +59,45 @@ mutate(
       amount >= 50000 & amount < 100000 ~ '50k_100k',
    amount >= 100000 & amount < 500000 ~ '100k_500k',
     amount >= 500000 & amount < 1000000 ~ '500k_1m',
-   amount >= 1000000  ~ '1m_plus'
+   amount >= 1000000  ~ '1m_plus',
   )
-)
+) 
+
 ```
 
 **Q2** Some of the loans appear not to have been paid out - there is a column representing the amount of money that hasn't been disbursed to the applicant. Which servicing lenders have the most loans with undisbursed amounts greater than 0?
-**A2** [write your answer here]
+**A2** [Davis Trust Company]
 
 ```{r}
-# Write the code to produce your answer here
-
+west_virginia_ppp %>%
+  group_by(undisbursed_amount, servicing_lender_name) %>%
+  summarise(
+    count_amount = n()
+)
 ```
 
 **Q3** What are some potential reasons why a loan might not be paid out? What questions does that circumstance raise for you?
-**A3** [write your answer here]
+**A3** [The company might not have enough to pay them back or maybe their loan is still in the process of being approved and searching for funds. Why would they delay giving the company money or what process does it take to disburse the money?]
 
 
 **Q4** Which month in 2021 had the most loans approved?
-**A4** [write your answer here]
+**A4** [March 2021 had the most approved loans]
 
 ```{r}
-# Write the code to produce your answer here
-
+west_virginia_ppp %>%
+  mutate(Month = floor_date(date_approved, "month")) %>%
+  group_by(Month) %>%
+  summarise(total = n()) %>%
+  arrange(desc(total))
 ```
 
 **Q5** How many loans went to West Virginia applicants that listed the maximum number of jobs retained (500)? Which one had the earliest approved date?
-**A5** [write your answer here]
+**A5** [10 loans were given to West Virginia applicants. J. AUSTIN HEATING & COOLING, INC.got approved first.]
 
 ```{r}
-# Write the code to produce your answer here
-
+west_virginia_ppp %>%
+  group_by(state, name, jobs_retained, date_approved) %>%
+  summarise(
+    count_amount = n()
+  )
 ```

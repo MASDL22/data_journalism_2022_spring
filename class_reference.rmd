@@ -59,3 +59,12 @@ library(tidyverse)
   
   floor_date=what each month
   ceiling_date=rounds up by one month after
+  
+  ```{r}
+# Turn off scientific notation
+options(scipen=999)
+
+# Load the tidyverse and lubridate
+library(tidyverse)
+library(lubridate)
+```
