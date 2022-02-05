@@ -48,7 +48,7 @@ west_virginia_ppp <- read_rds("data/lab_02.rds")
 
 **Q1** Create a new column that divides the loan amounts into the following options - under_10k, 10k_50k, 50k_100k, 100k_500k, 500k_1m, 1m_plus - and calculates how many loans are in each group. How would you describe the distribution of loans in a sentence?
 Hint: You will need to use `case_when` to make this work.
-**A1** [write your answer here]
+**A1** [The distribution of loans for each group most likely were disproportionate to each other. ]
 
 ```{r}
  west_virginia_ppp<- west_virginia_ppp %>%
@@ -62,7 +62,7 @@ mutate(
    amount >= 1000000  ~ '1m_plus',
   )
 )  
-mutate(Month = floor_date(loan_cat, "loans")) %>%
+mutate(project_state = loan_cat(month, "loan_cat")) %>%
   group_by(loan_cat) %>%
   summarise(total = n()) %>%
   arrange(desc(total))
