@@ -61,7 +61,9 @@ mutate(
     amount >= 500000 & amount < 1000000 ~ '500k_1m',
    amount >= 1000000  ~ '1m_plus',
   )
-) group_by(loan_cat) %>%
+)  
+mutate(Month = floor_date(loan_cat, "loans")) %>%
+  group_by(loan_cat) %>%
   summarise(total = n()) %>%
   arrange(desc(total))
 
