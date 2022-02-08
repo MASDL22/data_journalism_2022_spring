@@ -68,3 +68,9 @@ options(scipen=999)
 library(tidyverse)
 library(lubridate)
 ```
+```{r}
+ppp_maryland_loans <- ppp_maryland_loans %>%
+  mutate(id = as.character(id))
+
+glimpse(ppp_maryland_loans)
+```
