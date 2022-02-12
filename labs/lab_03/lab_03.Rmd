@@ -35,15 +35,15 @@ Q1: Which five cities located in Kanawha County, West Virginia, got the largest 
 
 Note: To answer this question, you'll need to see every variation of the "city" column in Kanawha County, and then fully clean the city field for those cities. Hint: once cleaned, the dataframe that counts the number of loans by city should have 38 distinct cities for Kanawha County.
 
-A1:
+A1:Charleston, Saint Albans, South Charleston, Cross Lanes, and Elkview had the largest number of loans.Charleston-25  Saint Albans-5 South Charleston-4  Cross Lanes-2 Elkview-2
 ```{r}
 cleaned_wv_ppp_loans <- wv_ppp_loans %>%
   clean_names() %>%
   distinct() %>%
   mutate(project_county_name = str_sub(county_name, KANAWHA)) %>%
-  mutate(city = str_to_title(city))
- filter(project_county_name == "KANAWHA") %>%
-
+  mutate(city = str_to_title(project_county_name))%>%
+ summarise(max_amount = max(amount),
+            min_amount= min(amount))
 cleaned_wv_ppp_loans
 ```
 
@@ -54,18 +54,20 @@ Q2: Find the 5-digit ZIP code in West Virginia that had the highest total amount
 * How much of that loan was forgiven?
 * Which number is bigger, the loan amount or the forgiveness amount? Can you explain the discrepancy?
 
-A2:
+A2:The ZIP code is located in WHITE SULPHUR SPRINGS, West Virginia. The business' loan was for 8912202 dollars. 9029298 dollars of their loan was forgiven. The forgiveness amount is larger than the loan amount. Perhaps the data isn't entirely there or maybe the data they added in was incorrect. 
 
 ```{r}
 # Hint
 # First, create a dataframe that shows the top 5-digit ZIP code by total dollar amount
 # Second, use the top ZIP code to create a separate dataframe that shows the business with the biggest loan in that ZIP code.
 wv_ppp_loans %>%
-  group_by(forgiveness_amount, zip, amount) %>%
-  summarise(
-    count=n()
-  ) %>%
-  arrange(desc(count))
+  cleaned_wv_ppp_loans <- wv_ppp_loans %>%
+  clean_names() %>%
+  rename(id = x1_id) %>%
+  distinct() %>%
+  mutate(zip = str_sub(zip, start=1L, end=5L)) %>%
+summarise(max_amount = max(amount),
+            min_amount= min(amount))
 ```
 
 Q3: Five business entities owned by the spouse of a member of West Virginia's U.S. House delegation got PPP loans. Write up a paragraph that answers the following questions.   
@@ -89,14 +91,15 @@ Some hints to help you answer this question:
 * When you examine the disclosure forms, there may be lots of stock sales and retirement accounts mixed in.  Ignore those. In the table in the disclosure forms, look for "Partnership" or "C-Corp" in the column named "Income Type"
 * This is a link to details on passage of the [CARES ACT](https://www.congress.gov/bill/116th-congress/house-bill/748). You can find a link to how the House voted by clicking on a link from [this page](https://www.congress.gov/bill/116th-congress/house-bill/748/actions).
 
-A3:DM Motors, Dutch Miller Chevrolet, Dutch Miller of Charleston, Dutch Miller of Charlotte, and Dutch Miller Subaru are the businesses. These businesses work on or sell cars to the public. In total, the companies received 3,105,300 dollars in loans. % of the loans were forgiven by the program. For the most part, the House members voted yes on the bill. 
+A3:DM Motors, Dutch Miller Chevrolet, Dutch Miller of Charleston, Dutch Miller of Charlotte, and Dutch Miller Subaru are the businesses. These businesses work on or sell cars to the public. In total, the companies received 3,105,300 dollars in loans. More than 100% of the loans were forgiven by the program which is odd. For the most part, the House members voted yes on the bill. 
 
 ```{r}
 
 # Hint
 # First, create a dataframe that only has loans to those five companies
 # Second, use that newly created dataframe to calculate total loan amount and percentage forgiven for those companies
-forgiveness <- wv_ppp %>% filter(zip == "25704" & business_type == "Corporation" & forgiveness_amount > 150000)
-
+forgiveness <- wv_ppp %>% filter(zip == "25704" & business_type == "Corporation" & forgiveness_amount > 150000)%>%
+total_wv_ppp_loans <- cleaned_wv_ppp_loans %>%
+  summarise(total_amount = sum(amount))%>%
 nrow(forgiveness)
 ```
