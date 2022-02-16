@@ -137,7 +137,7 @@ maryland_ppp_with_naics_and_demographics <- maryland_ppp_with_naics %>% left_joi
 
 ### Task 13: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer**41968	loans were given to more than half of the non-Hispanic Black population. The average amount was 55546.84 dollars and the median amount was 19949 dollars.
 
 ```{r}
 # zcta with > 50% non-Hispanic Black population
@@ -152,7 +152,7 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 14: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer**There were 112056	loans given to more than half of the non-Hispanic white population. The average amount was 89194.67 dollars. The median amount was 20833	dollars. 
 
 ```{r}
 # zcta with > 50% non-Hispanic white population
@@ -166,7 +166,8 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 15: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic Black population, grouped by rural or urban status, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** R- There were 145 loans with an average of 44815.22	dollars and a median of 19064.57.
+U- There were 41823 loans with the average of 55584.05 dollars and a median of 19950 dollars.
 
 ```{r}
 # zcta with > 50% non-Hispanic Black population grouped by rural/urban
@@ -181,7 +182,8 @@ maryland_ppp_with_naics_and_demographics %>%
 
 ### Task 16: Asking Demographic Questions
 **Task** Find the number of PPP loans that went to ZCTAs with more than 50% non-Hispanic white population, grouped by rural or urban status, and calculate the average and median amounts for those loans. Put your answers below.
-**Answer**
+**Answer** R- There were 18083 loans given and an average of 74463.32 dollars and a median of 20833 dollars.
+U- There were 93973 loans given and an average of 92029.39 dollars and a median of 20833 dollars.
 
 ```{r}
 # zcta with > 50% non-Hispanic white population grouped by rural/urban

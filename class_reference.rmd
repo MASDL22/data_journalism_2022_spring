@@ -77,3 +77,16 @@ glimpse(ppp_maryland_loans)
 command shift m=%%
 
 ^#^#^# find numbers on word
+
+result<-og data
+filter(column=="new column")
+mutate
+
+
+
+# bind_rows with list-binds multiple databases together
+
+
+# with nrow included to match row total
+row on left %>% left_join(naics_codes, by="naics_code") %>% select(name, naics_code, title) %>% nrow() what they have in common
+```
