@@ -137,11 +137,11 @@ summarise(
 ```
 
 **Q5** What might explain why 20850 has a significant Asian population (23.5%) and only 240 of the 3,186 loans (7.5%) are to Asian applicants?
-**A5** [write your answer here]
+**A5** [I would assume that maybe there aren't as many Asian owners within 20850 despite there being a 23.5 percent Asian population.]
 
 
 **Q6** Check to see if any Maryland zip codes that have loans where the PPP data lists the applicant as being Asian BUT are located in a zip code that does not appear to have Asian population according to the ZCTA data. How many loans do they have and what is the total amount? Take a look at these zip codes - what could explain this?
-**A6** [There are 13 loans and 20701 had a total of 75170.5 dollars, 21031 has a total of 6819563 dollars, and 21240 has a total of 358674]*google Zip for third question *
+**A6** [There are 13 loans and 20701 had a total of 75170.5 dollars, 21031 has a total of 6819563 dollars, and 21240 has a total of 358674 dollars. Something that could've happened is that maybe that it is a workplace and that the main race of it was Asian. Also that it's not really a place where people live.]
 
 ```{r}
 maryland_ppp_with_naics_and_demographics%>%
@@ -156,7 +156,7 @@ maryland_ppp_with_naics_and_demographics%>%
 ```
 
 **Q7** How many industries have exactly one loan in the data (hint: you can filter _after_ using `summarise` on any totals you create). From a newsworthiness standpoint, which of these is most worthy of further exploration, and why?
-**A7** [write your answer here]
+**A7** [44 businesses got 1 loan.Something that could be explored a little more would be the cotton ginning industry getting a loan since the main thing the industry would probably have to pay for is to maintain machines or something along that line. I'm sort of unfamiliar with how the industry operates today.]
 
 ```{r}
 maryland_ppp_with_naics_and_demographics%>%
@@ -165,7 +165,6 @@ maryland_ppp_with_naics_and_demographics%>%
     count = n() 
   ) %>%
 arrange(desc(count))%>%
-filter()
-  
+ filter(count==1)
 
 ```
