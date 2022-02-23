@@ -90,3 +90,4 @@ mutate
 # with nrow included to match row total
 row on left %>% left_join(naics_codes, by="naics_code") %>% select(name, naics_code, title) %>% nrow() what they have in common
 ```
+filter(str_detect(city, "^a|^A")) %>% The filter function in the codeblock below says: look in the city column, and pluck out any value that starts with (the "^" symbol means "starts with") a lowercase "a" OR (the vertical "|", called a pipe, means OR) an uppercase "A".  
