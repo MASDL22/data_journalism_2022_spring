@@ -18,14 +18,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction 
 
-In this notebook, we are reverse engineering the story, [STORY NAME](STORY URL)
+In this notebook, we are reverse engineering the story, [STORY NAME](https://www.propublica.org/article/over-a-dozen-black-and-latino-men-accused-a-cop-of-humiliating-invasive-strip-searches-the-nypd-kept-promoting-him)
 
 ## Load libraries
 
 Loading required libraries for this analysis.
 
 ```{r echo=FALSE, message=FALSE}
-
+library(tidyverse)
 ```
 
 ## Load and Cleaning Data
@@ -38,8 +38,10 @@ In this section, describe the source of the data, write a basic data dictionary 
 # Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
 
 # Clean required data and prepare for analysis if needed. 
-
-
+read_csv("data/CCRB-Complaint-Data_202007271729/allegations_202007271729.csv")
+allegation_data<-read_csv("data/CCRB-Complaint-Data_202007271729/allegations_202007271729.csv")
+cleaned_allegation_data<- allegation_data%>%
+  distinct()
 ```
 
 ## Sentences to Engineer
@@ -47,12 +49,19 @@ In this notebook, we are reverse engineering five sentences from the story.
 
 ### Sentence 1
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [Eighty-six of the roughly 420 officers in the department who currently hold a rank above captain — running precincts and other large commands and overseeing hundreds of officers — have tallied at least one misconduct allegation that was substantiated by the CCRB, meaning that investigators amassed enough evidence of offenses, ranging from bad language to pistol whippings, to say that they happened and broke patrol guidelines. The most common involved improper property entries and searches.]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
 # Put code to reverse engineer sentence here
-
+allegation_data%>%
+  filter(str_detect(board_disposition,"^Subs"))%>%
+  filter(rank_now=="Captain")%>%
+  group_by(unique_mos_id, rank_abbrev_incident, rank_abbrev_now, complainant_ethnicity)%>%
+  summarise(
+    count= n()
+  )%>%
+   arrange(desc(count))
 # Display results of code below this codeblock
 
 ```
