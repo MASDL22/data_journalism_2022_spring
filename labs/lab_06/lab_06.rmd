@@ -1,7 +1,7 @@
 ---
 title: "lab_06"
 author: "marianeli de leon"
-date: "8/26/2021"
+date: "3/3/2022"
 output: html_document
 ---
 
@@ -81,7 +81,7 @@ cleaned_international_migration%>%
 ```
 
 **Q2** Write a sentence or two that describes the data you produced in A1. Try to convey the most important idea.
-**A2** [write your answer here]
+**A2** [It appears that the amount of international migration decreased between July 2011-July 2019.]
 
 **Q3** Which region & jurisdiction had the largest percentage change (either negative or positive) for international migration between July 2018 and July 2017? The formula for percentage change is easy to remember: (New-Old)/Old.
 **A3** [Baltimore Reigon in Anne Arundel County]
@@ -93,7 +93,7 @@ cleaned_international_migration%>%
 ```
 
 **Q4** What's your best guess as to why these changes occurred, and in those places in particular?
-**A4** [write your answer here]
+**A4** [I feel the change occurred due to more stricter laws on immigration that occurred within 2017 and 2018.]
 
 
 ## Back to Tabula
@@ -144,4 +144,4 @@ cleaned_domestic_migration%>%
 ```
 
 **Q7** How would you describe this data? Is there a county or region that stands out, and why?
-**A7** [write your answer here]
+**A7** [The data seems to fluctuate a lot between the three years, some places gain more domestic migrants while others lost some. Caroline county sort of stuck out to me because of the dramatic change from 177 to 9 in three years. Something really happened for the number to drop so low.]
