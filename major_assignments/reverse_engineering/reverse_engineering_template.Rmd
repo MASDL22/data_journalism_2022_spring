@@ -57,18 +57,36 @@ In this notebook, we are reverse engineering five sentences from the story.
 allegation_data%>%
   filter(str_detect(board_disposition,"^Subs"))%>%
   filter(rank_now=="Captain")%>%
-  group_by(unique_mos_id, rank_abbrev_incident, rank_abbrev_now, complainant_ethnicity)%>%
+  filter(complainant_gender=="Male")%>%
+  filter(complainant_ethnicity=="Black", "Hispanic")%>%
+  group_by(unique_mos_id, rank_abbrev_incident, rank_abbrev_now, complainant_ethnicity,complainant_gender)%>%
   summarise(
     count= n()
   )%>%
    arrange(desc(count))
+  filter(rank_now == "Chiefs and other ranks" | rank_now == "Deputy Inspector" | rank_now == "Inspector") %>% 
+  filter(complainant_gender=="Male")%>%
+  filter(complainant_ethnicity=="Black" & "Hispanic")%>%
+  select(unique_mos_id) %>% 
+  distinct() %>% 
+  group_by(unique_mos_id, rank_abbrev_incident, rank_abbrev_now, complainant_ethnicity,complainant_gender) %>% 
+  summarize(count = n()) %>% 
+  summarize(total = sum(count))
+  
+   filter(rank_now == "Chiefs and other ranks" | rank_now == "Deputy Inspector" | rank_now == "Inspector" & str_detect(board_disposition, "^Subs")) %>% 
+ filter(complainant_gender=="Male")%>%
+  filter(complainant_ethnicity=="Black" & "Hispanic")%>%
+  group_by(allegation) %>% 
+  summarize(count= n()) %>% 
+  arrange(desc(count))
+
 # Display results of code below this codeblock
 
 ```
 
 ### Sentence 2
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [Of at least 77 allegations made against him in 26 separate CCRB complaints, 29 were unsubstantiated; five were “unfounded,” meaning investigators concluded the incident never took place; and 27 were “exonerated,” meaning the conduct fell within patrol guidelines. Investigators have never proved that McCormack strip-searched men in the street, let alone penetrated them with his finger, though the city settled four lawsuits involving strip-search allegations against him for a total $184,500]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
@@ -80,7 +98,7 @@ allegation_data%>%
 
 ### Sentence 3
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [An overwhelming majority of the city’s 36,000 officers do not have a single substantiated complaint on their records; only 1 in 9 does]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
@@ -92,7 +110,7 @@ allegation_data%>%
 
 ### Sentence 4
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [Data shows that while more than half of officers in the lowest rank are people of color, the higher ranks — above captain — are more than 75% white. A dozen of those high-ranking officers have three or more complaints with substantiated allegations; 10 are white. Five have reached the rank of deputy inspector, the lowest promoted at the commissioner’s discretion; all are white.]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
@@ -104,7 +122,7 @@ allegation_data%>%
 
 ### Sentence 5
 
-* **Sentence text**: [Paste in sentence to engineer here]
+* **Sentence text**: [McCormack has been accused of misconduct in at least 16 lawsuits, 11 of which settled for a combined $415,000]
 * **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
 
 ```{r}
