@@ -93,3 +93,11 @@ row on left %>% left_join(naics_codes, by="naics_code") %>% select(name, naics_c
 filter(str_detect(city, "^a|^A")) %>% The filter function in the codeblock below says: look in the city column, and pluck out any value that starts with (the "^" symbol means "starts with") a lowercase "a" OR (the vertical "|", called a pipe, means OR) an uppercase "A".  
 
 parse_number=extracts number from thing
+
+library(rvest)
+
+https://www.umpd//stats/invdent)log.cfm?year=2002& month=2
+
+dont ever use the <blink> tag EVER!
+
+tibble()=command
