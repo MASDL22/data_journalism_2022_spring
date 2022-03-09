@@ -40,7 +40,7 @@ Let's suppose we can't find a table like that for download, but we do see a vers
 
 ### Task 2: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer**
+**Answer**A lot of charts based on things like sectors or divisions.
 
 ### Task 3: Load image
 **Task** Run the following code to display an image showing what you should see on the web page.
@@ -78,7 +78,7 @@ In our web browser, if we right-click anywhere on the page and select "view sour
 
 ### Task 3: View source
 **Task** Follow the directions in the previous paragraph. Briefly describe what you see there.
-**Answer**
+**Answer**There is the code that designs the entire page within the website.
 
 Here's a picture of what some of the source code looks like.
 
@@ -95,7 +95,7 @@ Let's write a bit of code to tell R to go to the URL for the page and ingest all
 
 ### Task 5: Run code to read in html
 **Task** Run the following code to read in the html. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The code gave us the url within an html head and body. It tries to display the contents through html.
 
 ```{r}
 # read in the html
@@ -115,7 +115,7 @@ If we click on the name "naics_industry" in our environment window, we can see t
 
 ### Task 6: Examine html
 **Task** Follow the directions in the previous paragraph to click on naics_industry in the environment window. Briefly describe what you see there.
-**Answer**
+**Answer**It has the head and body of the html and says that there's a list of 2 without saying what the 2 is.
 
 Nested within the `<html>` tag is the `<head>` and `<body>`, the two fundamental sections of most web pages. We're going to pull information out of the `<body>` tag in a bit.
 
@@ -133,7 +133,7 @@ On the page, find the data we want to grab -- "Table 2. NAICS Sectors" - and rig
 
 ### Task 8: Inspect element
 **Task** Follow the directions in the previous paragraph. Briefly describe what you see there.
-**Answer**
+**Answer**It shows the code for sector has a stubhead and has an id of NAICSsectors-0-0.
 
 ### Task 9: Load image
 **Task** Run the following code to display an image showing what you should see on the web page.
@@ -147,7 +147,7 @@ Because it's inside of a table, and not some other kind of element (like a `<div
 
 ### Task 10: Run code to process tables
 **Task** Run the following code to process tables. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**Some of the NAICS data came from 2002 up to 2017 on one output, another had the codes to different industries that NAICS has for them, and another doesn't look like a normal dataframe.
 
 ```{r}
 # read in the html and extract all the tables
@@ -166,7 +166,7 @@ Click on it to open it up.
 
 ### Task 11: Inspect naics_industry.
 **Task** Follow the directions in the previous paragraph. Briefly describe what you see there.
-**Answer**
+**Answer**Now the chart displays 6 different tibbles that all have different outputs within them.
 
 It should look like this.
 
@@ -185,7 +185,7 @@ Click on the scroll icon for the first dataframe examine it.
 
 ### Task 13: Click scroll icon
 **Task** Follow the directions in the previous paragraphs. Briefly describe what you see there.
-**Answer**
+**Answer**This dataframe mainly has dates within it and describes what year the NAICS data was taken.
 
 ### Task 14: Load image
 **Task** Run the following code to display an image showing what you should see when you follow the steps in task 13.
@@ -200,7 +200,7 @@ Let's try clicking on the scroll icon for row 2.
 
 ### Task 15: Click scroll icon
 **Task** Follow the directions in the previous paragraph. Briefly describe what you see there.
-**Answer**
+**Answer**THe second row has the sector and description of the industries on the NAICS.
 
 ### Task 16: Load image
 **Task** **Task** Run the following code to display an image showing what you should see when you follow the steps in task 15.
@@ -213,7 +213,7 @@ That's more like it! So, all we need to do now is to store that single dataframe
 
 ### Task 17: Run code to keep only table we want
 **Task** Run the following code to keep only the table we want. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**They have the sectors and descriptions of the industries within the dataframe. However, the source is seen as a description which it isn't.
 
 ```{r}
 # Read in all html from table, store all tables on page as nested list of dataframes.
@@ -237,7 +237,7 @@ From here, we can do a little light cleaning. Let's use clean_names() to standar
 
 ### Task 18: Run code to do some light cleaning
 **Task** Run the following code to do light cleaning. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**Now the names are all lowercased and the last row has been cut from the dataframe.
 
 ```{r}
 # Read in all html from table, store all tables on page as nested list of dataframes.
@@ -284,7 +284,7 @@ Now, let's run the code we wrote in the last chapter, to get a tidy list of NAIC
 
 ### Task 2: Run code to load the table from the last chapter
 **Task** Run the following code to load table from last chapter. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The output shows the data being split between sectors and description.
 ```{r}
 # Define url of page we want to scrape
 
@@ -324,7 +324,7 @@ We can find it here: [https://www.bls.gov/iag/tgs/iag22.htm](https://www.bls.gov
 
 ### Task 4: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer**
+**Answer**This link goes to NAICS 22 which is the code for utilities. It gives various data entries for different areas of the profession like employment and more. 
 
 A few scrolls down the page, there's a table that has employee statistics.  
 
@@ -358,7 +358,7 @@ Next, let's read in the html of that page, and store it as an object called empl
 
 ### Task 7: Run code to read in html
 **Task** Run the following code to read in the html. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It has the content type and the beginning header for the datatable on the website.
 
 ```{r}
 
@@ -399,7 +399,7 @@ But essentially what the html_element function says is "find the html element th
 
 ### Task 9: Run code to get html_element with info we need
 **Task** Run the following code to get html_element with info we need. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The data is divided into different sections that make the datatable on the website readable and not out of order.
 
 ```{r}
 
@@ -421,7 +421,7 @@ From here, we can use the html_tables() function to transform it from messy html
 
 ### Task 10: Run code to convert to table
 **Task** Run the following code to convert to table. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The output looks a little bit off as there are footnotes are in the dataframe and the backdata isn't aligned with the data.
 
 ```{r}
 
@@ -446,7 +446,7 @@ Use clean_names() to standardize the column names, use slice() to keep only the 
 
 ### Task 11: Run code to keep row 2 and light cleaning
 **Task** Run the following code to keep row 2 and light cleaning. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It made data series lowercased and has the date to go along with it.
 
 ```{r}
 
@@ -479,13 +479,13 @@ The info for mining is on this page: [https://www.bls.gov/iag/tgs/iag21.htm](htt
 
 ### Task 12: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer**
+**Answer**This page has the results from the Mining, Quarrying, and Oil and Gas Extraction industry. It's similar to utilities but with its own results like it's average earnings increased from Oct 2021 to Jan 2022.
 
 The info for construction is on this page: [https://www.bls.gov/iag/tgs/iag23.htm](https://www.bls.gov/iag/tgs/iag23.htm).
 
 ### Task 13: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer**
+**Answer**The construction page had an increase of fatalities from 2017 to 2020 but their employment keeps increases as well.
 
 We have 20 sectors to get through.  
 
@@ -512,7 +512,7 @@ First, let's do it the repetitive way.  We're writing the same print function ov
 
 ### Task 14: Run code to print sectors
 **Task** Run the following code to print sectors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It listed out the industries in a certain order.
 ```{r}
 
 print("Agriculture, Forestry, Fishing and Hunting")
@@ -536,7 +536,7 @@ First let's make a list of sectors, and save it as an object called "list_of_sec
 
 ### Task 15: Run code to make list of sectors
 **Task** Run the following code to make list of sectors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It listed all the industries into a sector.
 ```{r}
 list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quarrying, and Oil and Gas Extraction", "Utilities", "Construction", "Manufacturing",
 "Wholesale Trade", "Retail Trade", "Transportation and Warehousing", "Information", "Finance and Insurance")
@@ -547,7 +547,7 @@ And now let's write a "for loop" to print out sector on that list.
 
 ### Task 16: Run code to use for loop to print sectors
 **Task** Run the following code to use a for loop to print list of sectors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The list keeps ordering itself in a specific order.
 ```{r}
 # Define list of sectors
 list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quarrying, and Oil and Gas Extraction", "Utilities", "Construction", "Manufacturing",
@@ -557,6 +557,11 @@ list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quar
 for (sector in list_of_sectors) {
   print(sector)
   #I need to make URL for sector, then scape url into hmtl and save it, then find specific table in html, then extract one row(second row) from table
+  naics_sectors <- naics_url%>%
+  read_html() %>%
+ html_element(xpath = '//*[@id="naics"]') %>%
+  select(naics_sectors, naics_sectors)
+  html_table()
 }
 
 
@@ -572,7 +577,7 @@ If we try to feed it something different -- say "sector_list" -- it won't work, 
 
 ### Task 17: Run code to use for loop to print sectors that errors
 **Task** Run the following code to use a for loop to print list of sectors that errors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It says the sector list is not found.
 
 ```{r, error=TRUE}
 # Define list of sectors
