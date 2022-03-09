@@ -554,17 +554,26 @@ list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quar
 "Wholesale Trade", "Retail Trade", "Transportation and Warehousing", "Information", "Finance and Insurance")
 
 # Make a for loop and run it
+ #I need to make URL for sector, then scape url into hmtl and save it, then find specific table in html, then extract one row(second row) from table
+ind<-"https://www.bls.gov/ces/naics/"
+read_html() %>%
+  html_element(xpath = '//*[@id="NAICSsectors"]')
+  print("Mining, Quarrying, and Oil and Gas Extraction")
+
 for (sector in list_of_sectors) {
-  print(sector)
-  #I need to make URL for sector, then scape url into hmtl and save it, then find specific table in html, then extract one row(second row) from table
-  naics_sectors <- naics_url%>%
-  read_html() %>%
- html_element(xpath = '//*[@id="naics"]') %>%
-  select(naics_sectors, naics_sectors)
-  html_table()
+  print("Agriculture")
+  print("Forestry, Fishing and Hunting")
+  print("Mining, Quarrying, and Oil and Gas Extraction")
+  print("Utilities")
+  print("Construction")
+  print("Manufacturing")
+  print("Wholesale Trade")
+  print("Retail Trade")
+  print("Transportation and Warehousing")
+  print("Information")
+  print( "Finance and Insurance")
 }
-
-
+ 
 ```
 
 That's many fewer lines of code.  Let's break down what we just saw, starting with for `(sector in list_of sectors)`.
