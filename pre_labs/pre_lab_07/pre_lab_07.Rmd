@@ -547,7 +547,7 @@ And now let's write a "for loop" to print out sector on that list.
 
 ### Task 16: Run code to use for loop to print sectors
 **Task** Run the following code to use a for loop to print list of sectors. Briefly describe the output that appears below the codeblock.
-**Answer**The list keeps ordering itself in a specific order.
+**Answer**The list mainly has the Mining, Quarrying, and Oil and Gas Extraction.
 ```{r}
 # Define list of sectors
 list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quarrying, and Oil and Gas Extraction", "Utilities", "Construction", "Manufacturing",
@@ -557,7 +557,7 @@ list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quar
  #I need to make URL for sector, then scape url into hmtl and save it, then find specific table in html, then extract one row(second row) from table
 ind<-"https://www.bls.gov/ces/naics/"
 read_html() %>%
-  html_element(xpath = '//*[@id="NAICSsectors"]')
+  html_element(xpath = '//*[@id="NAICSsectors"]')%>%
   print("Mining, Quarrying, and Oil and Gas Extraction")
 
 for (sector in list_of_sectors) {
@@ -611,7 +611,7 @@ To illustrate this, note that the code works just fine if we change it to say th
 
 ### Task 18: Run code to use for loop to print sectors
 **Task** Run the following code to use a for loop to print list of sectors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The output shows all the listed sectors from the database.
 ```{r}
 # Define list of sectors
 list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quarrying, and Oil and Gas Extraction", "Utilities", "Construction", "Manufacturing",
@@ -631,7 +631,7 @@ In this code below, it has no idea what we mean by "sector_name", because we hav
 
 ### Task 19: Run code to use for loop to print sectors that errors
 **Task** Run the following code to use a for loop to print list of sectors. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**It says that sector name can't be found.
 ```{r, error=TRUE}
 # Define list of sectors
 list_of_sectors <- c("Agriculture, Forestry, Fishing and Hunting", "Mining, Quarrying, and Oil and Gas Extraction", "Utilities", "Construction", "Manufacturing",
@@ -688,7 +688,7 @@ To put it all together, the code below says "make a list of numbers that starts 
 
 ### Task 23: Run code to print each row number in naics_industry
 **Task** Run the following code to to print each row number in naics_industry. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The list was numbered based on the dataframe.
 
 ```{r}
 # For loop that includes instructions that refer to a variable that doesn't exist.
@@ -866,7 +866,7 @@ To see how this is working, we're going to edit our print statement at the end a
 
 ### Task 30: Run code to run for loop to store url and xpath value
 **Task** Run the following for loop to store url and xpath value. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The list has all the URLs for the different industries along with an id to identify them. 
 ```{r}
 
 # For loop, iterating over each row in our naics industry dataframe
@@ -933,7 +933,7 @@ In this next step, we use employment_info <- employment_info[[1]]  to extract ea
 
 ### Task 32: Run code to run for loop to clean up tables
 **Task** Run the following for loop to clean up tables. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**All the data is on one row instead of two. 
 
 ```{r}
 
@@ -974,7 +974,7 @@ We can add that back in by using bind_cols() to reconnect the each_row_df, which
 
 ### Task 33: Run code to run for loop to add in data
 **Task** Run the following for loop to add in data. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**Now the names of the industries are in the codeblock but they're on the second page. 
 
 ```{r}
 
@@ -1016,7 +1016,7 @@ Let's use parse_number() to remove the comma from the jun_2021 number and conver
 
 ### Task 34: Run code to run for loop to clean up tables
 **Task** Run the following for loop to clean up tables. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The database was able to keep all the information from the previous question but the only thing that changed was the lack of commas in the dataframe. 
 
 ```{r}
 
@@ -1069,7 +1069,7 @@ And inside our "for loop" at the end, we'll bind each employment_info dataframe 
 
 ### Task 35: Run code to run for loop to combine tables into a single table
 **Task** Run the following for loop combine tables into a single table. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The outputs were now put into one chart instead of individual codeblocks. 
 
 ```{r}
 
@@ -1140,7 +1140,7 @@ And here's the table for the agriculture sector.
 
 ### Task 38: Go to the web page linked above
 **Task** Visit the web page linked above. Briefly describe what you see there.
-**Answer**
+**Answer**The Agriculture, Forestry, Fishing and Hunting NACIS had instances where various sections like unemployment had increased but the fatalities decreased from 2017-2020.
 
 ### Task 39: Load image
 **Task** Run the following code to display an image showing what you should see on the web page.
@@ -1154,7 +1154,7 @@ In the second row of this table, it has the unemployment rate. Nowhere on the pa
 
 ### Task 40: Run code to remove agriculture from table
 **Task** Run the following code to remove agriculture from table. Briefly describe the output that appears below the codeblock.
-**Answer**
+**Answer**The Agriculture, Forestry, Fishing and Hunting has an NA when they refer to the November 2021 employees.
 
 ```{r}
 # remove the suspicious value for agriculture.
