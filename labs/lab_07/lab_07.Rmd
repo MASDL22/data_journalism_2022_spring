@@ -83,7 +83,27 @@ states<-"https://dwillis.github.io/jour472files/ppp_scraping_example/index.html"
   
   st<- states_list[[1]]
   st
-  35 for (url in vector) {
-    
+  for (url in vector) {
+     
   }
+   each_row_df <- st %>%
+      slice(row_number)
+    xpath_st<- paste0('//*[@id="',each_row_df$sector_xpath_id,'"]')
+    
+     url <- each_row_df$sector_url
+    
+      employment_info <- url %>%
+      read_html() %>%
+      html_elements(xpath = xpath_employment_table) %>%
+      html_table()
+
+     employment_info <- employment_info[[1]] %>%
+      clean_names() %>%
+      slice(2) %>%
+      bind_cols(each_row_df) %>%
+      mutate(nov_2021 = parse_number(nov_2021)) %>%
+      rename(nov_2021_employees = nov_2021) %>%
+      select(sector,description,nov_2021_employees)
+      employment_by_sector_all <- employment_by_sector_all %>%
+      bind_rows(employment_info)
 ```
