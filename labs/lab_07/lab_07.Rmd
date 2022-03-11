@@ -38,7 +38,7 @@ doj<- "https://www.justice.gov/criminal-fraud/cares-act-fraud"%>%
 read_html()%>%
 html_elements('ul li b')%>%
 html_text()%>%
-as_tibble(doj)%>%
+as_tibble(doj)
 ```
 
 Q2. In how many individual judicial districts has the U.S. Department of Justice filed cases against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud?  Note: an example of a judicial district is "Southern District of Florida". You will need to use rvest scrape the data on this single webpage into a dataframe.
@@ -77,33 +77,35 @@ A7.
 states<-"https://dwillis.github.io/jour472files/ppp_scraping_example/index.html"
   
   
-  states_list<-states %>% 
+states_list<-states %>% 
  read_html()%>%
   html_table()
   
-  st<- states_list[[1]]
-  st
-  for (url in vector) {
-     
-  }
-   each_row_df <- st %>%
+  states_list<- states_list[[1]]
+  
+  all_states_info<-tibble()
+  
+  for (row_number in 1:nrow(states_list)) {
+ 
+   each_row_df <- states_list %>%
       slice(row_number)
-    xpath_st<- paste0('//*[@id="',each_row_df$sector_xpath_id,'"]')
     
-     url <- each_row_df$sector_url
+     url <- each_row_df$url
     
-      employment_info <- url %>%
+      state_us<- url %>%
       read_html() %>%
-      html_elements(xpath = xpath_employment_table) %>%
       html_table()
 
-     employment_info <- employment_info[[1]] %>%
-      clean_names() %>%
-      slice(2) %>%
-      bind_cols(each_row_df) %>%
-      mutate(nov_2021 = parse_number(nov_2021)) %>%
-      rename(nov_2021_employees = nov_2021) %>%
-      select(sector,description,nov_2021_employees)
-      employment_by_sector_all <- employment_by_sector_all %>%
-      bind_rows(employment_info)
+      state_us<- state_us[[1]]
+      
+     all_states_info<-all_states_info
+      bind_rows(state_us)  
+  } 
+  all_states_info<-all_states_info%>%
+    mutate(loans_per_100k= total_ppp_loans/population*100000)%>%
+    arrange(desc(loans_per_100k))
+
+ all_states_info
+      
+      
 ```
