@@ -91,7 +91,14 @@ allegation_data%>%
 
 ```{r}
 # Put code to reverse engineer sentence here
+mcomplaints <- cleaned_allegation_data%>%
+  filter(unique_mos_id == "18589")
 
+mcomplaints%>%
+count
+
+
+  
 # Display results of code below this codeblock
 
 ```
