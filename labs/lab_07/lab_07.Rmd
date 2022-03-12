@@ -54,7 +54,8 @@ as_tibble()
 ```
 
 Q4. The website (https://www.justice.gov/criminal-fraud/cares-act-fraud) shows that the DOJ filed more cases in the Southern District of Florida than in any other district. One of those cases was filed against someone named "Diamond Blue Smith". Who is Smith, and what was he accused of, according to the criminal complaint? If you were an editor, would you have assigned a reporter to write a story about this case when the complaint was filed in court? Why or why not?
-A4.
+A4.Diamond Blue Smith was a person who got PPP loans for his companies Throwbackjerseys.com,
+LLC and BlueStarRecords,LLC but later was charged with wire fraud, bank fraud, and Conspiracy/Attempt to Commit Wire Fraud and Bank Fraud.
 
 Q5. In what percentage of all judicial districts has the U.S. Department of Justice filed cases cases against people accused of fraud related to the PPP or EIDL loan program, according to the DOJ website listing those cases: https://www.justice.gov/criminal-fraud/cares-act-fraud? In answering this question, you should also produce a list of judicial districts where DOJ has NOT filed a case, according to this site.  Note: to answer this question, you will need to scrape a table of all district courts on this up-to-date Wikipedia page under the heading "Active Courts": https://en.wikipedia.org/wiki/List_of_United_States_district_and_territorial_courts  
 A5. 29% of judicial districts had the U.S. DOJ file cases against people accused of fraud.
@@ -69,10 +70,10 @@ anti_join(doju,doj, by = c("Region"="value"))
 
 ```
 Q6. What might explain why, according to this site, the DOJ has filed PPP-related fraud cases in less than half of the country's judicial districts?
-A6.
+A6. I assume that less than half of the country's judicial districts filed cases because either the districts filed them themselves, or the charges were brought but then dropped. Another reason could be that the crimes might not have been discovered yet or there weren't any frauds in certain places. 
 
 Q7. Which state had the most approved PPP loans per 100,000 population? [This web page](https://dwillis.github.io/jour472files/ppp_scraping_example/index.html) has links to 52 individual web pages, one for each state (plus Washington, D.C. and Puerto Rico). Each of those web pages contains a one-row html table that has the name of the state, the number of approved loans, and the 2019 population. Here's an example for [Alabama](https://dwillis.github.io/jour472files/ppp_scraping_example/states/alabama.html). You'll need to loop over the individual state urls, scrape each individual page and combine the information on each page into a single dataframe to answer this question. Don't forget to calculation the loans per 100,000.
-A7.
+A7.South Dakota had the most approved PPP loans per the 100,000 people. 
 ```{r}
 states<-"https://dwillis.github.io/jour472files/ppp_scraping_example/index.html"
   
@@ -98,7 +99,7 @@ states_list<-states %>%
 
       state_us<- state_us[[1]]
       
-     all_states_info<-all_states_info
+     all_states_info<-all_states_info%>%
       bind_rows(state_us)  
   } 
   all_states_info<-all_states_info%>%
