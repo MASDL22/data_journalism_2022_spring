@@ -94,11 +94,19 @@ allegation_data%>%
 mcomplaints <- cleaned_allegation_data%>%
   filter(unique_mos_id == "18589")
 
+mcomplaints %>% 
+  nrow()
+
 mcomplaints%>%
-count
+ group_by(complaint_id) %>% 
+  summarise(count = n()) %>% 
+  nrow()
+ 
+ mcomplaints%>%
+ filter(board_disposition=="Unsubstaniated")
 
-
-  
+mcomplaints%>%
+ filter(board_disposition=="Exonerated")
 # Display results of code below this codeblock
 
 ```
@@ -110,7 +118,10 @@ count
 
 ```{r}
 # Put code to reverse engineer sentence here
-
+nypd<-cleaned_allegation_data%>%
+  group_by(unique_mos_id)%>%
+summarise(count= n())%>%
+nrow()
 # Display results of code below this codeblock
 
 ```
@@ -122,7 +133,7 @@ count
 
 ```{r}
 # Put code to reverse engineer sentence here
-
+officers<-cleaned_allegation_data%>%
 # Display results of code below this codeblock
 
 ```
