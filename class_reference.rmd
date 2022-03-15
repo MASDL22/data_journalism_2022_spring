@@ -101,3 +101,6 @@ https://www.umpd//stats/invdent)log.cfm?year=2002& month=2
 dont ever use the <blink> tag EVER!
 
 tibble()=command
+
+#census_api_key("23d86a0f3402e889b16419069579742ff2bf5476", install=TRUE) if in another document but on same computer, dont need to put install=TRUE a second time
+acs1-state acs3-county acs5-town 
