@@ -118,7 +118,7 @@ spanish_5_17 %>%
 ```
 
 **Q4** Given the counties with the largest percentage of 5-17 year-olds that speak Spanish at home, what stands out to you about the data? How would you describe the top 5 counties? How would you describe Garrett County's numbers?
-**A4**
+**A4**Caroline County being one of the top percentages was interesting as I didn't think it would be anywhere near the top 5.  The counties are mainly located within Central Maryland and often have a large Hispanic population. Garrett county's numbers are extremely lower than the top 5 counties in Maryland and not known for a large Hispanic population. 
 
 **Q5** Which 5-digit zip code had the most removed PPP applications, and what is the percentage of Black population in that zip code according to the ACS? 
 
@@ -131,7 +131,7 @@ You'll need to combine the two dataframes in order to calculate the percentage,
 and then you can combine it with the PPP data. 
 
 Remember: the PPP data may not have only 5-digit zip codes!
-**A5**
+**A5** 72005 had the most removed PPP applications
 
 ```{r}
 black_pop <- get_acs(geography = "zcta",
@@ -161,17 +161,18 @@ top_zips <- data_clear %>%
 final<-pop_data
 inner_join(total_zip, by=c("GEOID", "NAME")) %>%
   select(-variable.x, -variable.y, -moe.x, -moe.y)%>% 
-  rename(black=estimate.x, total=estimate.y) %>%
+  rename(black=estimate.x, total_pop=estimate.y) %>%
   mutate(percent = (black/total)*100) %>% 
   arrange(desc(percent))
 
-ppp_data <- get_acs(geography="zcta", variables = "NAME")
-zips_combo <- black_pop %>% left_join(total_zip, by=c('zip5'='NAME'))
+ppp_data <- total_zip%>%
+  ppp_data<-get_acs(geography="zcta", variables = "NAME")%>%
+zips_combo <- final %>% left_join(ppp_data, by=c('percent'='estimate'))
 
 ```
 
 **Q6** How would you describe to an editor the top 10 zip codes with the most removed applications in terms of Black population? Where are they located, and what do they have in common? Are there any zip codes that seem different, and if so why?
-**A6**
+**A6**Most of the top 10 zip codes had a majority of Black population and many of the zip codes are within the Southern U.S. areas that are on the poorer side and many of the zip codes don't seem too different. 
 
 **Q7** What other columns from the PPP data could be useful in reporting on what happened to these removed loans?
-**A7**
+**A7**The name and estimate columns could help in reporting.
