@@ -156,7 +156,7 @@ data_clear<-data%>%
 top_zips <- data_clear %>%
  group_by(zip5) %>%
  summarise(count= n()) %>%
- arrange(desc(count))%>%
+ arrange(desc(count))
 
 final<-pop_data
 inner_join(total_zip, by=c("GEOID", "NAME")) %>%
@@ -164,8 +164,9 @@ inner_join(total_zip, by=c("GEOID", "NAME")) %>%
   rename(black=estimate.x, total=estimate.y) %>%
   mutate(percent = (black/total)*100) %>% 
   arrange(desc(percent))
-md_zipcodes <- get_acs(geography="zcta", variables = "B19013_001", state='MD')
-md_zips_with_acs <- top_zips %>% left_join(md_zipcodes, by=c('zip5'='GEOID'))
+
+ppp_data <- get_acs(geography="zcta", variables = "NAME")
+zips_combo <- black_pop %>% left_join(total_zip, by=c('zip5'='NAME'))
 
 ```
 
