@@ -134,6 +134,18 @@ nrow()
 ```{r}
 # Put code to reverse engineer sentence here
 officers<-cleaned_allegation_data%>%
+  group_by(mos_ethnicity, complaint_id, rank_now, rank_incident, board_disposition)%>%
+  filter(mos_ethnicity == "White")%>%
+
+officers<- cleaned_allegation_data%>%
+ filter(board_disposition == "Substantiated(Charges)")%>%
+filter(mos_ethnicity== "White")%>%
+ filter(rank_incident =="Captain, Deputy Inspector, Inspector") 
+
+officers<- cleaned_allegation_data%>%
+filter(rank_now =="Deputy Inspector")%>%
+filter(mos_ethnicity== "White")%>%
+  summarise()
 # Display results of code below this codeblock
 
 ```
