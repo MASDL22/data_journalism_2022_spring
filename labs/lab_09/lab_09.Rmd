@@ -42,6 +42,7 @@ knitr::include_graphics(rep("images/chart_1.png"))
 ```{r}
 wv_ppp<- read_rds("data/lab_09.rds")
 wv_april <- wv_ppp %>%
+  filter(date_approved < "2020-05-01")
   group_by(date_approved) %>%
   summarise(
     total_loans=n()
@@ -51,8 +52,6 @@ wv_april
 ```
 ```{r}
 wv_april%>%
-  group_by(date_approved)
-  filter(date_approved > 2020-05-01)
 
   ggplot()+
    geom_line(aes(x=date_approved, y=total_loans)) + 
@@ -88,6 +87,13 @@ geom_point(
 * Make the bars on the chart blue! I didn't show you how to do this in the prelab, so do some web sleuthing to figure it out.  
 ```{r}
 state_ppp<-read_csv("data/state_ppp_all.csv")
+```
+```{r}
+state_ppp%>%
+ state<- get_acs(geography = "state",
+              variables = c(medincome = "B19013_001"),
+              state = "WV",
+              year = 2020)
 ```
 ```{r}
 
