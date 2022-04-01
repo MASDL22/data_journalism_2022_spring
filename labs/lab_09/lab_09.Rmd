@@ -42,7 +42,7 @@ knitr::include_graphics(rep("images/chart_1.png"))
 ```{r}
 wv_ppp<- read_rds("data/lab_09.rds")
 wv_april <- wv_ppp %>%
-  filter(date_approved < "2020-05-01")
+  filter(date_approved < "2020-05-01")%>%
   group_by(date_approved) %>%
   summarise(
     total_loans=n()
@@ -76,7 +76,7 @@ geom_point(
   inherit.aes = TRUE
 )
 ```
-**A1.** 
+**A1.** April 28 had the most loans approved. 
 
 **Q2.** What are the top 10 states that got the most PPP loans per 100,000 people? You MUST do the following things when answering this question:
 
