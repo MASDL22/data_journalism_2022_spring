@@ -112,16 +112,16 @@ state_all %>%
   geom_bar(aes(x=reorder(state,one_per_pop), weight=one_per_pop), fill = "blue") +
   coord_flip() + 
   labs(
-    title="Top 10 states by ppp loans per 100,000 people",
-    x = "State",
-    y = "Loans per 100K",
+    title=" Most PPP loans per 100,000 people by State",
+    x = "states",
+    y = "loans",
     caption = "source: SBA PPP loan; U.S. Census."
     
   )
 
 ```
 
-**A2.** 
+**A2.** South Dakota, North Dakota, Nebraska,Georgia,Iowa,Illinois, Louisiana,Florida,Mississippi,and Montana have the most loans per 100,000 people.
 
 **Q3.**  A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis.  For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid. 
 
@@ -156,6 +156,6 @@ sub_ppp%>%
   geom_point(aes(x=amount,y=forgiveness_amount))
 ```
 **A3.**  
-
+It appears that most people had part of their loans forgiven. Some had a small percentage of their loans forgiven and others had all the loans forgiven which seems a bit normal for the most part. 
 
 -30-
