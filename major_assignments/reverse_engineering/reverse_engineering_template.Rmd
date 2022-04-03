@@ -137,7 +137,7 @@ officers<-cleaned_allegation_data%>%
   group_by(mos_ethnicity, complaint_id, rank_now, rank_incident, board_disposition)%>%
   filter(mos_ethnicity == "White")%>%
 
-officers<- cleaned_allegation_data%>%
+officers%>%
  filter(board_disposition == "Substantiated(Charges)")%>%
 filter(mos_ethnicity== "White")%>%
  filter(rank_incident =="Captain, Deputy Inspector, Inspector")%>%
@@ -158,7 +158,8 @@ filter(mos_ethnicity== "White")%>%
 ```{r}
 # Put code to reverse engineer sentence here
 mcomplaints%>%
-  group_by(outcome_description)
+  filter(board_disposition == "Substantiated (Charges)")
+
 
 # Display results of code below this codeblock
 
