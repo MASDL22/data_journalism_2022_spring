@@ -98,11 +98,20 @@ combo_data<-kabbage_counties%>%
   inner_join(counties, by = c("project_county_name"))%>%
     rename("kabbage_total"="total.x", "all_counties"="total.y")
 
-combo_data%>%
+total<- combo_data%>%
   group_by(kabbage_total,all_counties)%>%
   mutate (kabbage_total/all_counties)
  
+percentage<-total%>%
+remove("project_state.y")
   
 county_fips<-read_csv("data/county_fips.csv")
+
+fixed_county_fips<-county_fips%>%
+  rename("project_county_name"="match_county")
+
+all<-fixed_county_fips%>%
+  inner_join(total, by = c("project_county_name"))
+  write_csv(all, "data/kabbage_loans.csv")
 ```
 **A3.**  
