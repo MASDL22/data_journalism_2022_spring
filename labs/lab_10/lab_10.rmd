@@ -73,12 +73,21 @@ Illnois had the most PPP loans for barber shops and most undisbursed application
 
 **Q2.** Using Datawrapper, make a different (ideally better) version of the chart you made above. TO BE CLEAR: this new graphic should show information about states and loans with undisbursed amounts, so don't, for example, focus on a single state. To do this, you MUST go back in R and do any calculations or add additional data to make the chart more effective or answer the above question in a different way. Your chart MUST be different in that it cannot be a bar chart showing the counts of total and undisbursed applications by state. It could be a bar chart showing another calculation or metric, or a scatterplot, or some other form. Follow the same general guidelines as above for the chart's visual elements, and publish it and including the URL below, along with an explanation of how this chart is different from the first one and how you decided what to do.
 ```{r}
-app_with_both%>%
-  
-  
-  write_csv()
+jobs_retained<-barber_ppp%>% 
+  group_by(state, jobs_retained,amount)%>%
+  arrange(desc(jobs_retained)) 
+
+top_ten<-jobs_retained%>%
+  group_by(state,jobs_retained)%>%
+ summarise(jobs_retained=n())%>%
+  arrange(desc(jobs_retained)) %>%
+  head(10)
+    
+    
+  write_csv(top_ten, "data/jobs_retained_barber.csv")
 ```
-**A2.**
+**A2.**https://datawrapper.dwcdn.net/mi7wh/1/
+I chose to look at the states where barber shops retained the most jobs when applying for their PPP Loans since many states often retain one job, I wanted to see if there was possibly a chance where more jobs were retained during the PPP loan process. 
 
 **Q3.** The online lender Kabbage, Inc. is featured in the [ProPublica PPP fake farms story](https://www.propublica.org/article/ppp-farms). To show where Kabbage was lending money, make a county-level map that shows the percentage of loans in each county that were Kabbage loans. To do this, make a codeblock and do the following:
 
@@ -95,23 +104,25 @@ kabbage_counties<- read_csv("data/kabbage_counties.csv")
 counties<- read_csv("data/all_counties.csv")
 
 combo_data<-kabbage_counties%>%
-  inner_join(counties, by = c("project_county_name"))%>%
-    rename("kabbage_total"="total.x", "all_counties"="total.y")
+  inner_join(counties, by = c("project_county_name","project_state" ))
+    
 
 total<- combo_data%>%
+  rename("kabbage_total"="total.x", "all_counties"="total.y")%>%
   group_by(kabbage_total,all_counties)%>%
   mutate (kabbage_total/all_counties)
  
-percentage<-total%>%
-remove("project_state.y")
   
 county_fips<-read_csv("data/county_fips.csv")
 
-fixed_county_fips<-county_fips%>%
-  rename("project_county_name"="match_county")
+new_county_fips<-fixed_county_fips%>%
+ inner_join(total, by = c("project_county_name"))
 
-all<-fixed_county_fips%>%
-  inner_join(total, by = c("project_county_name"))
+
+all<-new_county_fips%>%
+  inner_join(new_county_fips, by = c("project_county_name"))%>%
+
   write_csv(all, "data/kabbage_loans.csv")
 ```
-**A3.**  
+**A3.**  https://datawrapper.dwcdn.net/8CsP2/1/
+Kabbage loans appear in mostly states that might be more farm dependent, mainly within the midwest, northeast, central, and northern parts of the country. All states have gotten a loan from them but some gained more than others. Loans aren't found within counties or states that don't rely so much on farming or agriculture as their main source of income. States like Nevada and California didn't get many Kabbage loans. Part of Florida might not have data because part of it is close to Georgia but it appears that all counties in Florida got a Kabbage loan in someway. 
