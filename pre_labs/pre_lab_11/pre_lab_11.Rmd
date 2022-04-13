@@ -53,7 +53,7 @@ When you do, it should look something like this:
 
 ### Task: Load image
 **Task** Run the following code to load an image. Describe what you see in the answer space below.
-**Answer**Different files that are named hospitals
+**Answer**Different files that are named hospitals.
 
 ```{r, echo=FALSE}
 knitr::include_graphics(rep("images/geolayers2.png"))
@@ -88,11 +88,11 @@ md_hospitals
 
 We have 72 hospitals, according to this data.
 
-What kind of hospitals do we have? 
+What kind of hospitals do we have? General Acute care, Non profit,psychiatric,and medical/surgical hospitals.
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It tallied up how many types of hospitals Maryland has with a geometry side to them.
 
 ```{r}
 md_hospitals %>%
@@ -107,7 +107,7 @@ Let's narrow our data to only look at the 50 "General Acute Care hospitals."
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It filtered the dataframe to only have general acute care hospitals.
 
 ```{r}
 
@@ -125,7 +125,7 @@ We can simply plot them on a longitude-latitude grid using ggplot.
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**The ggplot shows the hospitals in the state but it vaguely looks like the outline of Maryland.
 
 ```{r}
 md_hospitals %>%
@@ -159,7 +159,7 @@ Now, let's use the counties() function from tigris to pull down a shapefile of a
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It has the counties that within the U.S.
 ```{r}
 
 counties <- counties() 
@@ -177,7 +177,7 @@ This county shapefile has all 3233 U.S. counties.  We only want the Maryland cou
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It got filtered down to only show Maryland counties. 
 
 ```{r}
 md_counties <- counties %>%
@@ -189,7 +189,7 @@ To see what this looks like, let's plot it out with ggplot. We can pretty clearl
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It gives a clearer map of Maryland and its counties.
 
 ```{r}
 md_counties %>%
@@ -281,7 +281,7 @@ Each hospital exists inside of a county, so we're going to first calculate the t
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It gave the list of counties based on how many beds were in the hospitals.
 
 ```{r}
 
@@ -302,7 +302,7 @@ Next, we'll go out and get population data for each county from tidycensus.  The
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It gave us a list of the population of each county. 
 
 ```{r}
 
@@ -318,7 +318,7 @@ Ultimately, we're going to join this county population table with our beds by co
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It gave a dataframe with the coutnies and a geometry column to it. 
 
 ```{r}
 
@@ -339,7 +339,7 @@ But there's a problem.  The column in our population data that has county names 
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It gives the counties and the total beds in the hospitals.
 
 ```{r}
 
@@ -355,7 +355,7 @@ Let's clean the population table. We're going to rename the "NAME" column to "CO
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**Now the counties are uppercase and the NAME column is now the COUNTY column.
 
 ```{r}
 md_county_population <- md_county_population %>%
@@ -374,7 +374,7 @@ Now we can join them.
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It created a new dataframe, however,two counties have N/A instead of 0.  
 
 ```{r}
 md_beds_per_100k <- md_county_population %>%
@@ -389,7 +389,7 @@ We have two NAs after we join, for Queen Anne's County and Carolina County.  Tha
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**Now all counties have hospital beds numbers.
 
 ```{r}
 md_beds_per_100k <- md_county_population %>%
@@ -404,7 +404,7 @@ Our final step before visualization, let's calculate the number of beds per 100,
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It added the beds per 100k column to the dataframe. 
 
 ```{r}
 md_beds_per_100k <- md_county_population %>%
@@ -423,7 +423,7 @@ Okay, now let's visualize.  We're going to build a choropleth map, with the colo
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**It shows a map of Maryland and the brighter an area is, the more beds the hospitals have. 
 
 ```{r}
 ggplot() + 
@@ -435,7 +435,7 @@ This map is okay, but the color scale makes it hard to draw fine-grained differe
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below.
-**Answer**
+**Answer**THe map colors changed to purple and a light orange color shows more beds are in a county. 
 
 ```{r}
 ggplot() + 
@@ -450,7 +450,7 @@ So let's change the color scale to a "log" scale, which will help us see those d
 
 ### Task: Run code
 **Task** Run the following code. Describe the output in the space below. What patterns do you see?
-**Answer**
+**Answer**Now we can clearly see which areas in Maryland have the most beds in their hospitals.
 
 ```{r}
 ggplot() + 
