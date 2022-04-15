@@ -22,6 +22,7 @@ library(tidycensus)
 library(sf)
 library(janitor)
 library(tigris)
+library(lubridate)
 census_api_key("23d86a0f3402e889b16419069579742ff2bf5476")
 ```
 ## Load data
@@ -46,43 +47,39 @@ Then answer these questions:
 fixed_wv_ppp<-wv_ppp_loans%>%
   mutate(naics_code = str_sub(naics_code, 1, 2))%>%
   filter(naics_code =="21")%>%
-
-
-counties <- counties() 
-wv_counties <- counties %>%
-  filter(STATEFP == "54")
-
+group_by(project_county_name)%>%
+summarise(  
+  count_loans = n(),
+  total_loans_amount = sum(amount)
+  )
 
 wv_county_population <- get_acs(geography = "county", 
               variables = c(population = "B01001_001"), 
               state = "WV",
-              geometry = TRUE)
+              geometry = TRUE)%>%
+    rename(COUNTY = NAME) %>%
+  mutate(COUNTY = toupper(str_remove_all(COUNTY,", West Virginia|County")))%>%
+  mutate(COUNTY = str_trim(COUNTY,side="both"))%>%
+  select(COUNTY, estimate, geometry)%>%
+clean_names()
 
-fixed_wv_ppp%>%
-    rename(COUNTY = project_county_name) %>%
-  mutate(COUNTY = toupper(str_remove_all("COUNTY","West Virginia|County"))) %>%
-  mutate(COUNTY = str_trim("COUNTY",side="both")) %>%
-  select(COUNTY)
-
-ppp_wv<-fixed_wv_ppp%>%
-    rename(COUNTY = project_county_name) %>%
-  mutate(COUNTY = toupper(str_remove_all("COUNTY","West Virginia|County"))) %>%
-  select(name,COUNTY,congressional_district, naics_code, amount)
-
-wv_per_100k <-wv_county_population %>%
-  left_join(fixed_wv_ppp, by= c("COUNTY")) %>%
-  mutate(pop_per_100k = estimate/population*100000) %>%
+west_va_100k <-wv_county_population %>%
+  left_join(fixed_wv_ppp, by= c("county"="project_county_name")) %>%
+  mutate(pop_per_100k = total_loans_amount/estimate*100000) %>%
+   mutate(pop_per_100k = replace_na(pop_per_100k,0))%>%
   arrange(desc(pop_per_100k))
 
 ggplot() + 
-  geom_sf(data=wv_counties) + 
-  geom_sf(data=wv_county_population) +
-  theme_minimal()
+  geom_sf(data=west_va_100k, aes(fill=pop_per_100k)) + 
+  theme_minimal() +
+  scale_fill_viridis_b(option="magma",trans = "log") 
 
-
+west_va_100k %>%
+  as_tibble() %>%
+  arrange(desc(pop_per_100k))
 
 ```
-**A1.**
+**A1.**It appears that the southwest area of West Virginia and it appears that certain counties have many businesses within making it so that more loans are approved there. Ritchie County got the highest total loan amount with 7653980. Ritchie County got 77752742.79 per 100,000 people and they received 9 loans. The population in Ritchie COunty is 9,844 people. 
 
 **Q2.** You want to understand WHY the spatial pattern you saw above exists.  So you grab a shapefile with the latitude and longitude coordinates of every mine permit in West Virginia from the state Department of Environmental Protection.
 
@@ -96,13 +93,36 @@ Make a map with a point for each one of these mine permits and put a blank map w
 
 What spatial pattern do you see? How does it compare to the spatial pattern in the first map you made?
 ```{r}
+mine<-st_read("https://tagis.dep.wv.gov/arcgis/rest/services/WVDEP_enterprise/mining_reclamation/MapServer/0/query?where=1%3D1&outFields=*&geometry=&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json")
+
+mine_after_sept<-mine%>%
+  mutate(expiredate = ymd(expiredate))%>%
+  filter(expiredate > "2021/09/01")
+
+counties <- counties() 
+
+wv_counties <- counties %>%
+  filter(STATEFP == "54")
+
+
+ggplot() + 
+  geom_sf(data=wv_counties) + 
+  geom_sf(data=mine_after_sept) +
+  theme_minimal()
 
 ```
-**A2.**
+**A2.**The spatial pattern seems to show more of the southeast part of the state got a lot loans, however, based on the other map, it seems that one part of the state got more loan amounts than the southeast. 
 
 **Q3.** To confirm the spatial comparison you identified in question 2, let's create a new map that layers the mine location points on top of our PPP choropleth map we created in question 1. What do you notice about the number of mines in the county that has the highest total loan amount per 100K?
 
-**A3.**
+**A3.**There is only one mine in the county with the highest total loan amount per 100k. 
+```{r}
+ggplot() + 
+  geom_sf(data=west_va_100k, aes(fill=pop_per_100k)) + 
+  geom_sf(data=mine_after_sept) +
+  theme_minimal() +
+  scale_fill_viridis_b(option="magma",trans = "log") 
+```
 
 **Q4.** Starting from the original WV ppp dataframe, examine the loans to companies in "Mining, Quarrying, and Oil and Gas Extraction" in the county with the highest total loan amount per 100K (you can use the table you created in question 1 to identify the top county).
 
@@ -111,7 +131,12 @@ What spatial pattern do you see? How does it compare to the spatial pattern in t
 * How many jobs did they save, according to the data?
 * What's your hypothesis for why a company in their specific industry would need to seek a PPP loan during the pandemic?
 ```{r}
+ritchie_wv<-wv_ppp_loans%>%
+ mutate(naics_code = str_sub(naics_code, 1, 2))%>%
+  filter(naics_code =="21")%>% 
+  filter(project_county_name=="RITCHIE")%>%
+arrange(desc(amount))
 
 ```
-**A4.**
+**A4.**Hall Drilling took up most of the loans in Ritchie County. They are in the "Mining, Quarrying, and Oil and Gas Extraction" industry and they have trucking, drilling, product installation, construction, and roustabout services. According to the data,they saved 387 jobs. I would think that they need a PPP loan because less people would be around due to the pandemic and more restrictions would make them fall behind on projects they were working on before the pandemic started. 
 -30-
