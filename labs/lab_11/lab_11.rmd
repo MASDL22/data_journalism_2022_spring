@@ -64,6 +64,10 @@ fixed_wv_ppp%>%
   mutate(COUNTY = str_trim("COUNTY",side="both")) %>%
   select(COUNTY)
 
+ppp_wv<-fixed_wv_ppp%>%
+    rename(COUNTY = project_county_name) %>%
+  mutate(COUNTY = toupper(str_remove_all("COUNTY","West Virginia|County"))) %>%
+  select(name,COUNTY,congressional_district, naics_code, amount)
 
 wv_per_100k <-wv_county_population %>%
   left_join(fixed_wv_ppp, by= c("COUNTY")) %>%
