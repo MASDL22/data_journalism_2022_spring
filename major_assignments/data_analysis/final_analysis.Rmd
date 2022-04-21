@@ -17,16 +17,16 @@ library(lubridate)
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 ```{r}
-first_games<-read_csv("data/2020-08-19.csv")%>% 
+first_games_2020<-read_csv("data/2020-08-19.csv")%>% 
   clean_names %>% rename(row = x1)
 
-second_games<-read_csv("data/2022-01-08.csv")%>% 
+second_games_2022<-read_csv("data/2022-01-08.csv")%>% 
   clean_names %>% rename(row = x1)
 
-first_reviews<-read_csv("data/bgg-15m-reviews.csv")%>% 
+first_reviews_15m<-read_csv("data/bgg-15m-reviews.csv")%>% 
   clean_names %>% rename(row = x1)
 
-second_reviews<-read_csv("data/bgg-15m-reviews.csv")%>% 
+second_reviews_19m<-read_csv("data/bgg-15m-reviews.csv")%>% 
   clean_names %>% rename(row = x1)
 
 game_details<-read_csv("data/games_detailed_info.csv")%>% 
@@ -43,26 +43,31 @@ game_details %>%
   head(10)
 
 
-second_reviews %>% 
+second_reviews_19m %>% 
   group_by(user) %>% 
   summarise(count = n()) %>% 
   arrange(desc(count)) %>% 
   head(10)
 
-second_reviews %>% 
+second_reviews_19m %>% 
   filter(rating < 3) %>% 
   filter(str_detect(comment, "worst game")) %>% 
   group_by(name) %>% 
   summarize(count = n()) %>% 
   arrange(desc(count))
 
-previous_games <- first_games %>% 
+previous_games <- first_games_2020 %>% 
   select(id, rank, average, bayes_average, users_rated) %>% 
   rename(rank_2020 = rank) %>% 
   rename(average_2020 = average) %>% 
   rename(bayes_average_2020 = bayes_average) %>% 
   rename(users_rated_2020 = users_rated)
-all_data <- left_join(data_second_games, previous_games, by=("id"))
+all_data <- left_join(second_games_2022, previous_games, by=("id"))
+
+#How did the recent pandemic changes affect the number of visits to the website?
+
+first_games_2020%>%
+ left_join(second_games_2022, by c = "average")
 ```
 
 
