@@ -66,8 +66,10 @@ all_data <- left_join(second_games_2022, previous_games, by=("id"))
 
 #How did the recent pandemic changes affect the number of visits to the website?
 
-first_games_2020%>%
- left_join(second_games_2022, by c = "average")
+overall_average<-first_games_2020%>%
+inner_join(second_games_2022, by=c("average"))
+
+  View(mixed_games_average)
 ```
 
 
