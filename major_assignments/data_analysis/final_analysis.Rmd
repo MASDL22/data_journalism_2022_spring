@@ -69,6 +69,7 @@ all_data <- left_join(second_games_2022, previous_games, by=("id"))
 overall_average<-first_games_2020%>%
 inner_join(second_games_2022, by=c("average"))
 
+#This question can't be answered because the second file of games in 2022 on the website is significantly larger than the first ones in 2020. It would be impossible to remove the extra games from the second file in order to match the first. 
   View(mixed_games_average)
 ```
 
