@@ -1,0 +1,29 @@
+---
+title: "arkansas_state_project"
+name: "marianeli de leon"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+```{r}
+library(tidyverse)
+library(tidycensus)
+library(sf)
+library(janitor)
+library(tigris)
+library(lubridate)
+census_api_key("23d86a0f3402e889b16419069579742ff2bf5476")
+```
+
+```{r}
+ak_ppp<-read_csv("arkansas_ppp.csv")
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
