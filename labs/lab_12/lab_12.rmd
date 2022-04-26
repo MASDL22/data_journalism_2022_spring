@@ -74,7 +74,7 @@ most_incidents<-wvu_incidents%>%
 filter(date > recent_incidents$date - 30)%>%
 filter(title == recent_incidents$title)
 
-sub <- paste("The most recent date of incidents in WVU was ", format(recent_incidents$date, format="%B %d")," with ",  recent_incidents$title, " that occurred  ",   sep="")
+sub <- paste("The most recent date of incidents in WVU was ", format(recent_incidents$date, format="%B %d")," with ",  recent_incidents$title, " that occurred  ", count(n),  sep="")
 sub
   most_incidents%>%
   count()#turn into object to add to sub
