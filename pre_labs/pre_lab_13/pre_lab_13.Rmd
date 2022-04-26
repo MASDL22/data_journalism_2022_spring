@@ -119,7 +119,7 @@ The relationship between businesses in a state receiving ppe and the state's Tru
 
 ### Task 6: Correlate data
 **Task** Run the following code. Describe the model output. What do you see?
-**Answer**It shows that there's a 0.00008607 correlation that shows the number of loans given mostly to states who voted for Trump than states who voted for Clinton. 
+**Answer**It shows that there's a 0.00008607 correlation that shows the number of loans given mostly to states who voted for Trump than states who voted for Clinton which might be some correlation. 
 ```{r}
 
 cor.test(reveal_data$pct_trump, reveal_data$businesses_receiving_ppe_pct)
