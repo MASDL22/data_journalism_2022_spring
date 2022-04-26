@@ -1,7 +1,7 @@
 ---
 title: "lab_12"
-author: "derek willis"
-date: "11/16/2021"
+author: "marianeli de leon"
+date: "04/21/2022"
 output: html_document
 ---
 
@@ -33,6 +33,7 @@ library(tidyverse)
 library(tidycensus)
 library(sf)
 library(janitor)
+library(ggrepel)
 library(tigris)
 library(lubridate)
 census_api_key("23d86a0f3402e889b16419069579742ff2bf5476")
@@ -47,7 +48,7 @@ Then write code that will construct a sentence about the data described above co
 
 Put your sentence in the answer below, along with one other question you could ask of this data.
 
-**A1.**
+**A1.**The m
 
 ```{r}
 wvu_incidents<-read_csv("https://raw.githubusercontent.com/dwillis/wvu-projects/master/crime-log/crime_log.csv")%>%
@@ -69,8 +70,14 @@ wvu_incidents <- wvu_incidents %>%
    arrange(desc(date))%>% 
    slice(1)
  
-recent_incidents %>% 
-  filter(date == recent_incidents$wvu_incidents - 30)#trying to get the previous 30 days from the dataframe
+most_incidents<-wvu_incidents%>% 
+filter(date > recent_incidents$date - 30)%>%
+filter(title == recent_incidents$title)
+
+sub <- paste("The most recent date of incidents in WVU was ", format(recent_incidents$date, format="%B %d")," with ",  recent_incidents$title, " that occurred  ",   sep="")
+sub
+  most_incidents%>%
+  count()#turn into object to add to sub
 ```
 
 **Q2.** Maryland produces a [CSV file](https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv) showing the total number of vaccinations by zip code and -- interestingly -- it includes non-Maryland zip codes (as well as some zip codes that seem to be bad data). write a script that reads the CSV file, making the columns more readable and adding today's date. Then output the top 25 Maryland zip codes and top 25 non-Maryland zip codes based on number of people fully vaccinated, and write both dataframes out to CSV files, using the following name formats:
@@ -91,6 +98,13 @@ Google the top 2-3 zip codes from both Maryland and non-Maryland results and des
 **A2.**
 
 ```{r}
+vaccine_data<-read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv")
+
+maryland_zips<-read_csv("maryland_zips_yyyymmdd.csv")
+non_maryland_zips<-read_csv("non_maryland_zips_yyyymmdd.csv")
+
+
+#467
 ```
 
 **Q3.** Maryland has had one of the more successful vaccination rates, but you want to understand where a significant portion of the population remains less than fully vaccinated. Make a dataframe of all Maryland zip codes from the vaccination data you used in Q2 and join it to Maryland zip code population data from the Census API. Calculate the percentage of fully vaccinated for each zip code and then make a map showing the zip codes with less than 50 percent fully vaccinated. Put a blank map with the outline of Maryland counties (which you can get from Tigris) behind it for context. Add a label to the map describing what the data is and include the date from the vaccination data (programmatically, so you can run it every day).
