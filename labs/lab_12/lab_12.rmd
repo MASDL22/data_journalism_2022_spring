@@ -104,7 +104,7 @@ fixed_vaccine_data<- vaccine_data%>%
   filter(!is.na(FullyVaccinated))
   
 fixed_vaccine_data<-fixed_vaccine_data%>%  
-filter(ZIP_CODE > 20500)%>%#keep filter down zip codes
+filter(ZIP_CODE > 20500)%>%#keep filtering down zip codes
  
   
 
