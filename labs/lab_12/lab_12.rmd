@@ -48,7 +48,7 @@ Then write code that will construct a sentence about the data described above co
 
 Put your sentence in the answer below, along with one other question you could ask of this data.
 
-**A1.**The m
+**A1.** "The most recent date of incidents in WVU was April 21 with SUSPICIOUS EVENT that occurred  7 times in the past 30 days "
 
 ```{r}
 wvu_incidents<-read_csv("https://raw.githubusercontent.com/dwillis/wvu-projects/master/crime-log/crime_log.csv")%>%
@@ -74,7 +74,7 @@ most_incidents<-wvu_incidents%>%
 filter(date > recent_incidents$date - 30)%>%
 filter(title == recent_incidents$title)
 
-sub <- paste("The most recent date of incidents in WVU was ", format(recent_incidents$date, format="%B %d")," with ",  recent_incidents$title, " that occurred  ", count(n),  sep="")
+sub <- paste("The most recent date of incidents in WVU was ", format(recent_incidents$date, format="%B %d")," with ",  recent_incidents$title, " that occurred  ",  count(most_incidents)  , " times in the past 30 days ", sep="")
 sub
   most_incidents%>%
   count()#turn into object to add to sub
@@ -100,7 +100,15 @@ Google the top 2-3 zip codes from both Maryland and non-Maryland results and des
 ```{r}
 vaccine_data<-read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv")
 
-maryland_zips<-read_csv("maryland_zips_yyyymmdd.csv")
+fixed_vaccine_data<- vaccine_data%>%
+  filter(!is.na(FullyVaccinated))
+  
+fixed_vaccine_data<-fixed_vaccine_data%>%  
+filter(ZIP_CODE > 20500)%>%#keep filter down zip codes
+ 
+  
+
+maryland_zips<-read_csv("maryland_zips_yyyymmdd.csv")%>%
 non_maryland_zips<-read_csv("non_maryland_zips_yyyymmdd.csv")
 
 
