@@ -64,13 +64,146 @@ previous_games <- first_games_2020 %>%
   rename(users_rated_2020 = users_rated)
 all_data <- left_join(second_games_2022, previous_games, by=("id"))
 
-#How did the recent pandemic changes affect the number of visits to the website?
+# Question 1: Did the pandemic affect the number of reviews or the attitude of reviews?
+
+# First, gotta do a couple mutations to make difference columns 
+pandy_data <- pandy_data %>% 
+  mutate(rank_diff = rank - rank_2020) %>% 
+  mutate(average_diff = average - average_2020) %>% 
+  mutate(users_rated_diff = users_rated - users_rated_2020)
+# Averages 
+pandy_data %>% 
+  filter(!is.na(average_diff)) %>% 
+  summarize(total = sum(average_diff)) %>% 
+  as.numeric / nrow(pandy_data) 
+pandy_data %>% 
+  filter(!is.na(users_rated_diff)) %>% 
+  summarize(total = sum(users_rated_diff)) %>% 
+  as.numeric / nrow(pandy_data)   
+
+#Average difference in rating: -0.02565801
+#Average number of new ratings: 124.5064
+
+
+# New ratings 
+users_22 <- pandy_data %>% 
+  filter(!is.na(users_rated)) %>%
+  summarize(total = sum(users_rated))
+users_20 <- pandy_data %>% 
+  filter(!is.na(users_rated_2020)) %>%
+  summarize(total = sum(users_rated_2020))
+users_22 - users_20
+
+#3,116,253 new ratings total. 
+
+# Min and Max
+max(pandy_data$average_diff, na.rm = TRUE) 
+min(pandy_data$average_diff, na.rm = TRUE)
+pandy_data %>% 
+  filter(average_diff == 2.2)
+pandy_data %>% 
+  filter(average_diff == -3.51)
+
+#The minimum wasn't very interesting because it didn't have many ratings, but the max returned Pandemic Legacy board game, a 2020 release. It went up 2.2 points and got thousands more reviews over the two years. It's a game about a Soviet bioweapon. 
+
+median(pandemic_legacy_reviews$rating)
+pandemic_legacy_reviews %>% 
+  group_by(rating) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count))
+  
+# Data set for later exploration of Pandemic
+pandemic_legacy_reviews <- reviews_19m %>% 
+  filter(name == "Pandemic Legacy: Season 0")
+
+#The game got crazy high reviews with a median of 9. 
+
+#Number 2: Do the most reviewed games have a trend of positive or negative reviews?
+
+
+
+#Number 3: What type of game (multiplayer or single-player) has the most reviews? Most positive reviews? Most negative reviews?
+
+# most reviews
+most_reviews <- reviews_19m %>% 
+  group_by(name) %>% 
+  summarise(
+    number = n()
+  ) %>% 
+  arrange(desc(number))
+
+
+#Most reviews: Pandemic (108,971)
+
+# most positive reviews
+# positive = rating > 7
+
+pos_reviews <- reviews_19m %>% 
+  filter(rating > 7) %>% 
+  group_by(name) %>% 
+  summarise(
+    pos_number = n()
+  ) %>% 
+  arrange(desc(pos_number))
+
+
+#Most pos reviews: Pandemic (64,574)
+
+
+# most negative reviews
+# negative = rating < 4
+
+neg_reviews <- reviews_19m %>% 
+  filter(rating < 4) %>% 
+  group_by(name) %>% 
+  summarise(
+    neg_number = n()
+  ) %>% 
+  arrange(desc(neg_number))
+
+
+#Most neg reviews: Monopoly (10,457)
+
+
+# most neutral reviews
+# neutral = 4 < rating < 7
+
+neutral_reviews <- reviews_19m %>% 
+  filter(rating < 7 & rating > 4) %>% 
+  group_by(name) %>% 
+  summarise(
+    neutral_number = n()
+  ) %>% 
+  arrange(desc(neutral_number))
+
+
+#Most neutral reviews: Catan (28,966)
+
+
+
+#Number 4- How did the recent pandemic changes affect the number of visits to the website?
 
 overall_average<-first_games_2020%>%
 inner_join(second_games_2022, by=c("average"))
 
 #This question can't be answered because the second file of games in 2022 on the website is significantly larger than the first ones in 2020. It would be impossible to remove the extra games from the second file in order to match the first. 
   View(mixed_games_average)
+  
+  #Number 5:How do board games with longer playing times compare to shorter ones?  What board game category (fantasy, card game, deduction, etc.) was rated the highest and the lowest?
+  
+  
+  
+  
+  
+  playing_details<-game_details%>%
+ group_by(primary,boardgamecategory,board_game_rank)%>%
+    summarise(count= n())
+  
+  
+playing_details%>%
+  filter(primary)%>%
+  summarise(desc(board_game_rank))
+  
 ```
 
 
