@@ -104,7 +104,7 @@ fixed_vaccine_data<- vaccine_data%>%
   filter(!is.na(FullyVaccinated))
   
 fixed_vaccine_data<-fixed_vaccine_data%>%  
-filter(ZIP_CODE > 20500)%>%#keep filtering down zip codes
+filter(ZIP_CODE > 10000)%>%#keep filtering down zip codes
  
   
 
@@ -124,4 +124,32 @@ Describe the output of the map below, and say what you think the most interestin
 **A3.**
 
 ```{r}
+
+
+
+
+
+
+
+
+
+mdcounties <- counties %>% filter(STATEFP == 24)
+
+
+
+
+
+
+
+
+
+
+
+
+
+  geom_sf(data=mdcounties, aes(fill=cases)) +
+  scale_fill_viridis_c(option = "plasma", trans = "sqrt") +
+  theme_void() +
+  labs(title = paste("COVID-19 cases as of ", current[[1]], sep=""))
+
 ```
