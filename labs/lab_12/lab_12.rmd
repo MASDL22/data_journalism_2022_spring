@@ -104,12 +104,17 @@ fixed_vaccine_data<- vaccine_data%>%
   filter(!is.na(FullyVaccinated))
   
 fixed_vaccine_data<-fixed_vaccine_data%>%  
-filter(ZIP_CODE > 10000)%>%#keep filtering down zip codes
+filter(ZIP_CODE > 10000)%>%
+filter(ZIP_CODE >= 20588)
  
+maryland_zips<-fixed_vaccine_data%>%
+filter(ZIP_CODE >=20588)%>%
+filter(ZIP_CODE <= 21652)
   
+non_maryland_zips<-fixed_vaccine_data%>%
+  filter(ZIP_CODE >=20588)%>%
+filter(ZIP_CODE <= 21652)
 
-maryland_zips<-read_csv("maryland_zips_yyyymmdd.csv")%>%
-non_maryland_zips<-read_csv("non_maryland_zips_yyyymmdd.csv")
 
 
 #467
