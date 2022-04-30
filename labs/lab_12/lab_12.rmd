@@ -95,7 +95,7 @@ To do that, you will need to:
 
 Google the top 2-3 zip codes from both Maryland and non-Maryland results and describe them in your answer.
 
-**A2.**
+**A2.**It appears that most of the vaccinated people are closer to the ubran areas of Maryland while the least vaccinated are in rural areas of the state. 
 
 ```{r}
 vaccine_data<-read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv")
@@ -109,13 +109,19 @@ filter(ZIP_CODE >= 20588)
  
 maryland_zips<-fixed_vaccine_data%>%
 filter(ZIP_CODE >=20588)%>%
-filter(ZIP_CODE <= 21652)
+filter(ZIP_CODE <= 21652)%>%
+summarise(
+ arrange(desc(FullyVaccinated))
+)
+  
   
 non_maryland_zips<-fixed_vaccine_data%>%
-  filter(ZIP_CODE >=20588)%>%
+  filter(ZIP_CODE >=20000)%>%
 filter(ZIP_CODE <= 21652)
 
+write.csv(maryland_zips, "data/maryland_zips_yyyymmdd.csv")
 
+write.csv(non_maryland_zips, "data/non_maryland_zips_yyyymmdd.csv")
 
 #467
 ```
@@ -129,32 +135,40 @@ Describe the output of the map below, and say what you think the most interestin
 **A3.**
 
 ```{r}
+mixed_data<-zips%>%
+    mutate(GEOID = as.numeric(GEOID)) %>%
+left_join(maryland_zips, by=c("GEOID"="ZIP_CODE"))%>%
+  mutate(FirstDose = str_trim(FirstDose,side="both")) %>%
+  mutate(SecondDose = str_trim(SecondDose,side="both")) %>%
+  mutate(SingleDose = str_trim(SingleDose,side="both")) %>%
+  mutate(AtleastOneDose = str_trim(AtleastOneDose,side="both")) %>%
+  mutate(FullyVaccinated = str_trim(FullyVaccinated,side="both")) %>%
+mutate(percent= FullyVaccinated/estimate*100)
 
 
 
+zips<-md_county_population%>%
+  inner_join(mdcounties, by="GEOID")%>%
+ select(GEOID, estimate, geometry)
 
 
-
-
-
-
+counties <- counties() 
 mdcounties <- counties %>% filter(STATEFP == 24)
 
+md_county_population <- get_acs(geography = "county", 
+              variables = c(population = "B01001_001"), 
+              state = "MD")
+
+
+
+#Could not get mixed_data dataframe to show data for FirstDose, SecondDose, SingleDose, AtleastOneDose, and FullyVaccinated
 
 
 
 
-
-
-
-
-
-
-
-
-  geom_sf(data=mdcounties, aes(fill=cases)) +
+  geom_sf(data=mixed_data, aes(fill=cases)) +
   scale_fill_viridis_c(option = "plasma", trans = "sqrt") +
   theme_void() +
-  labs(title = paste("COVID-19 cases as of ", current[[1]], sep=""))
+  labs(title = paste("Fully Vaccinated Marylanders as of ", percent[[1]], sep=""))
 
 ```
