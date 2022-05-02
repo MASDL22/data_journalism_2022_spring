@@ -32,6 +32,19 @@ ak_ppp<-read_csv("arkansas_ppp.csv")
 ## Initial Exploration
 
 **Q1.**. Write R code that generates some basic descriptive statistics that allows you to describe the applications from your state. This code should produce results that describe the data in different ways: how many applications there are, along with ways to understand the typical and most frequent values for columns you find interesting or newsworthy. You should produce at least five (5) descriptive statistics and write up a summary of the data using them.
+```{r}
+ak_ppp%>%
+  summarise(count=name)#102,042
+ 
+ak_ppp%>%
+ filter(veteran =="Unanswered")%>%
+ filter(gender=="Unanswered")%>%
+  filter(race=="Unanswered")
+#out of the 102,042 applications, 61,594 places answered "Unanswered" to veteran, gender, and race
+
+zip_ak<-ak_ppp%>%
+ mutate(zip = str_sub(zip, start=1L, end=5L))
+```
 
 **A1.** 
 
@@ -39,12 +52,18 @@ ak_ppp<-read_csv("arkansas_ppp.csv")
 ## Geographic Analysis
 
 **Q2.** Write R code that examines geographic patterns for PPP loans in your state, using Census population information to calculate a per-capita figure for the state and counties and zip codes. Then, make a county map using ggplot showing the per-capita data and a zip code map showing the difference from the statewide per-capita figure. Describe the most interesting or newsworthy findings based on your exploration.
+```{r}
+
+```
 
 **A2.** 
 
 ## Lender Analysis
 
 **Q3.** Write R code to examine which lenders had the most approved applications in your state (and include summary statistics such as total amount and average loan amount). Generate dataframes that show the number and total amount of all loans and undisbursed loans per lender. For those lenders who had any undisbursed loans, make a graphic showing the relationship between the total amount of loans and the total undisbursed amount. Describe the most noticeable outlier lenders on that graphic below.
+```{r}
+
+```
 
 **A3.** 
 
@@ -56,6 +75,9 @@ ak_ppp<-read_csv("arkansas_ppp.csv")
 Does the distribution of PPP applications by the top 10 industries (by number of applications) roughly match the number of businesses reported in the Census data? Does it roughly match if you remove self-employed individuals and sole proprietorships from the PPP totals? Write up a summary of what you've found and whether there are potentially newsworthy patterns in the data.
 
 Create a county-level map showing the differences between the PPP applications and the Census business data for one of the top 10 industry codes. You can do this either using ggplot or Datawrapper (if the latter, publish that map and include the URL below).
+```{r}
+
+```
 
 **A4.** 
 
