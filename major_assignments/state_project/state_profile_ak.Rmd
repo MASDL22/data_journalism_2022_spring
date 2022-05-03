@@ -44,6 +44,11 @@ ak_ppp%>%
 
 zip_ak<-ak_ppp%>%
  mutate(zip = str_sub(zip, start=1L, end=5L))
+
+zip_ak%>%
+filter(zip=="72")
+
+
 ```
 
 **A1.** 
