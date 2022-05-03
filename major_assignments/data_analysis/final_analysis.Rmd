@@ -67,53 +67,53 @@ all_data <- left_join(second_games_2022, previous_games, by=("id"))
 # Question 1: Did the pandemic affect the number of reviews or the attitude of reviews?
 
 # First, gotta do a couple mutations to make difference columns 
-pandy_data <- pandy_data %>% 
+all_data <- all_data %>% 
   mutate(rank_diff = rank - rank_2020) %>% 
   mutate(average_diff = average - average_2020) %>% 
   mutate(users_rated_diff = users_rated - users_rated_2020)
 # Averages 
-pandy_data %>% 
+all_data %>% 
   filter(!is.na(average_diff)) %>% 
   summarize(total = sum(average_diff)) %>% 
-  as.numeric / nrow(pandy_data) 
-pandy_data %>% 
+  as.numeric / nrow(all_data) 
+all_data %>% 
   filter(!is.na(users_rated_diff)) %>% 
   summarize(total = sum(users_rated_diff)) %>% 
-  as.numeric / nrow(pandy_data)   
+  as.numeric / nrow(all_data)   
 
 #Average difference in rating: -0.02565801
 #Average number of new ratings: 124.5064
 
 
 # New ratings 
-users_22 <- pandy_data %>% 
+players_2022 <- all_data %>% 
   filter(!is.na(users_rated)) %>%
   summarize(total = sum(users_rated))
-users_20 <- pandy_data %>% 
+players_2020 <- all_data %>% 
   filter(!is.na(users_rated_2020)) %>%
   summarize(total = sum(users_rated_2020))
-users_22 - users_20
+players_2022 - players_2020
 
 #3,116,253 new ratings total. 
 
 # Min and Max
-max(pandy_data$average_diff, na.rm = TRUE) 
-min(pandy_data$average_diff, na.rm = TRUE)
-pandy_data %>% 
+max(all_data$average_diff, na.rm = TRUE) 
+min(all_data$average_diff, na.rm = TRUE)
+all_data %>% 
   filter(average_diff == 2.2)
-pandy_data %>% 
+all_data %>% 
   filter(average_diff == -3.51)
 
 #The minimum wasn't very interesting because it didn't have many ratings, but the max returned Pandemic Legacy board game, a 2020 release. It went up 2.2 points and got thousands more reviews over the two years. It's a game about a Soviet bioweapon. 
 
-median(pandemic_legacy_reviews$rating)
-pandemic_legacy_reviews %>% 
+median(pandemic_reviews$rating)
+pandemic_=reviews %>% 
   group_by(rating) %>% 
   summarize(count = n()) %>% 
   arrange(desc(count))
   
 # Data set for later exploration of Pandemic
-pandemic_legacy_reviews <- reviews_19m %>% 
+pandemic_reviews <- second_reviews_19m %>% 
   filter(name == "Pandemic Legacy: Season 0")
 
 #The game got crazy high reviews with a median of 9. 
@@ -125,7 +125,7 @@ pandemic_legacy_reviews <- reviews_19m %>%
 #Number 3: What type of game (multiplayer or single-player) has the most reviews? Most positive reviews? Most negative reviews?
 
 # most reviews
-most_reviews <- reviews_19m %>% 
+highest_reviews <- second_reviews_19m %>% 
   group_by(name) %>% 
   summarise(
     number = n()
@@ -138,7 +138,7 @@ most_reviews <- reviews_19m %>%
 # most positive reviews
 # positive = rating > 7
 
-pos_reviews <- reviews_19m %>% 
+pos_reviews <- second_reviews_19m %>% 
   filter(rating > 7) %>% 
   group_by(name) %>% 
   summarise(
@@ -153,7 +153,7 @@ pos_reviews <- reviews_19m %>%
 # most negative reviews
 # negative = rating < 4
 
-neg_reviews <- reviews_19m %>% 
+lowest_reviews <- second_reviews_19m %>% 
   filter(rating < 4) %>% 
   group_by(name) %>% 
   summarise(
@@ -168,7 +168,7 @@ neg_reviews <- reviews_19m %>%
 # most neutral reviews
 # neutral = 4 < rating < 7
 
-neutral_reviews <- reviews_19m %>% 
+neutral_reviews <- second_reviews_19m %>% 
   filter(rating < 7 & rating > 4) %>% 
   group_by(name) %>% 
   summarise(
@@ -201,8 +201,8 @@ inner_join(second_games_2022, by=c("average"))
   
   
 playing_details%>%
-  filter(primary)%>%
-  summarise(desc(board_game_rank))
+  summarise(
+    arrange (desc(boardgamecategory)))
   
 ```
 
