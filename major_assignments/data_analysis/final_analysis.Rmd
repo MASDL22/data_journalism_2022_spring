@@ -13,6 +13,7 @@ library(sf)
 library(janitor)
 library(tigris)
 library(lubridate)
+library(tidytext)
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
@@ -189,21 +190,21 @@ inner_join(second_games_2022, by=c("average"))
 #This question can't be answered because the second file of games in 2022 on the website is significantly larger than the first ones in 2020. It would be impossible to remove the extra games from the second file in order to match the first. 
   View(mixed_games_average)
   
-  #Number 5:How do board games with longer playing times compare to shorter ones?  What board game category (fantasy, card game, deduction, etc.) was rated the highest and the lowest?
+  #Number 5:What are common phrases in reviews of positive or negative reviews?
+  game_details%>%
+    filter(primary =="Pandemic")
   
   
   
-  
-  
-  playing_details<-game_details%>%
- group_by(primary,boardgamecategory,board_game_rank)%>%
-    summarise(count= n())
-  
-  
-playing_details%>%
-  summarise(
-    arrange (desc(boardgamecategory)))
-  
+second_reviews_19m%>%
+  filter(rating==10)%>%
+  filter(!is.na(comment))%>%
+  mutate(comment = gsub("http.*","", comment))
+
+
+  unique_words_comments <- second_reviews_19m %>% select(comment) %>%
+  unnest_tokens(word, comment)%>%
+      filter(!is.na(word))
 ```
 
 
