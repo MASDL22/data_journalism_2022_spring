@@ -33,25 +33,33 @@ ar_ppp<-read_csv("arkansas_ppp.csv")
 
 **Q1.**. Write R code that generates some basic descriptive statistics that allows you to describe the applications from your state. This code should produce results that describe the data in different ways: how many applications there are, along with ways to understand the typical and most frequent values for columns you find interesting or newsworthy. You should produce at least five (5) descriptive statistics and write up a summary of the data using them.
 ```{r}
-ar_ppp%>%
-  summarise(count=name)#102,042
+ar_ppp<-ar_ppp%>%
+  mutate(zip = str_sub(zip, start=1L, end=5L))%>%
+  summarise(count=name)
+#102,042 applications
  
 ar_ppp%>%
  filter(veteran =="Unanswered")%>%
  filter(gender=="Unanswered")%>%
   filter(race=="Unanswered")
-#out of the 102,042 applications, 61,594 places answered "Unanswered" to veteran, gender, and race
+#out of the 102,042 applications, 61,594 applications answered "Unanswered" to veteran, gender, and race
 
 zip_ar<-ar_ppp%>%
  mutate(zip = str_sub(zip, start=1L, end=5L))
 
 zip_ar%>%
 filter(zip >"73000")%>%
-  filter()
 summarise(
 arrange(desc(amount))
 )
 
+male_owned_ppp<-ar_ppp%>%
+  filter(gender=="Male Owned")%>%#25,742 Male Owned applications received a PPP Loan
+
+  male_owned_ppp%>%
+  filter(business_type =="Non-Profit Organization")%>%
+  head(10)%>%
+    arrange(desc(amount))#Out of all Male Owned Non Profit Organizations, the top 10 industries who received PPP loans are the 
 ```
 
 **A1.** 
