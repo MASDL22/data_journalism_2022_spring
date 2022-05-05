@@ -204,12 +204,11 @@ second_reviews_19m%>%
 
 
  unique_words_comments <- second_reviews_19m %>% select(comment) %>%
-  unnest_tokens(word, comment)
+  unnest_tokens(word, comment)%>%
+    filter(!is.na(word))
     View(unique_words_comments)
   
- unique_words_comments%>%
- filter(!is.na(word))
- 
+
   unique_words_comments%>%
   count(word, sort = TRUE) %>%
   top_n(25) %>%
