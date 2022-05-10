@@ -18,6 +18,7 @@ The deliverable will be this R Markdown notebook and a data folder that you will
 library(tidyverse)
 library(tidycensus)
 library(sf)
+library(ggthemes)
 library(janitor)
 library(tigris)
 library(lubridate)
@@ -49,9 +50,7 @@ zip_ar<-ar_ppp%>%
 
 zip_ar%>%
 filter(zip >"73000")%>%
-summarise(
-arrange(desc(amount))
-)
+arrange(desc(amount))#BARNEY BELLECI DBA STATE FARM had the largest loan which is odd.
 
 male_owned_ppp<-ar_ppp%>%
   filter(gender=="Male Owned")%>%#25,742 Male Owned applications received a PPP Loan
@@ -59,7 +58,7 @@ male_owned_ppp<-ar_ppp%>%
   male_owned_ppp%>%
   filter(business_type =="Non-Profit Organization")%>%
   head(10)%>%
-    arrange(desc(amount))#Out of all Male Owned Non Profit Organizations, the top 10 industries who received PPP loans are the 
+    arrange(desc(amount))#Out of all Male Owned Non Profit Organizations, the top 10 industries who received PPP loans are often industries who give to the community or religious services but the top industry was a used merchandise store. 
 ```
 
 **A1.** 
@@ -86,6 +85,10 @@ ar_county_population <- ar_county_population %>%
   rename(population = estimate) %>%
   select(COUNTY, population, geometry)
 
+ar_counties%>%
+  rename(COUNTY=NAME)
+
+
 ak_ppp%>%
   
   
@@ -96,13 +99,40 @@ ak_ppp%>%
 
 ## Lender Analysis
 
-**Q3.** Write R code to examine which lenders had the most approved applications in your state (and include summary statistics such as total amount and average loan amount). Generate dataframes that show the number and total amount of all loans and undisbursed loans per lender. For those lenders who had any undisbursed loans, make a graphic showing the relationship between the total amount of loans and the total undisbursed amount. Describe the most noticeable outlier lenders on that graphic below.
+**Q3.** Write R code to examine which lenders had the most approved applications in your state (and include summary statistics such as total amount and average loan amount). Generate dataframes that show the number and total amount of all loans and undisbursed loans per lender. For those lenders who had any undisbursed loans, make a graphic showing the relationship between the total amount of loans and the total undisbursed amount. Describe the most noticeable outlier lenders on that graphic below.#make graphic showing the relationship between lenders and loan amounts showing how many loans each lender issued for each amount in the dataframe. Describe the most noticeable outlier lenders on that graphic.
 ```{r}
-ak_ppp
+lender_ar<-ar_ppp%>%
+  
+lender_ar%>%
+group_by(state, lender, amount, originating_lender_city, originating_lender_state)%>%
+filter(state=="AR")%>%
+  summarise(
+    count = n()
+  )%>%
+arrange(desc(count))
 
+amount_lend<-lender_ar%>%
+  
+  amount_lend%>%
+  group_by(lender, amount) %>%
+  summarise(
+    count = n()
+  )%>%
+  arrange(desc(count))
 
-
-#pre lab 5
+amount_lend %>%
+  head(10)%>%
+  ggplot() +
+  geom_bar(aes(x=reorder(lender,amount), weight=amount)) +
+  coord_flip() + 
+  theme_economist() +
+  labs(
+    title="Arkansas' Top Lenders ",
+    x = "Lender\n",
+    y = "\nAmount in Loans",
+    caption = "source: SBA PPP loan database"
+  )
+#pre lab 5, 9
 ```
 
 **A3.** 
@@ -116,7 +146,7 @@ Does the distribution of PPP applications by the top 10 industries (by number of
 
 Create a county-level map showing the differences between the PPP applications and the Census business data for one of the top 10 industry codes. You can do this either using ggplot or Datawrapper (if the latter, publish that map and include the URL below).
 ```{r}
-ak_ppp
+ar_ppp
 
 
 
