@@ -159,29 +159,38 @@ Create a county-level map showing the differences between the PPP applications a
 ```{r}
 cbp <- read_rds("ar_cbp.rds")
 
-ar_ppp_fips<-ar_ppp%>%
-  left_join(ar_fips, by=c('project_county_name'='match_county'))
-
-ar_ppp_fips%>%
-filter(project_state == "AR")%>%
-group_by(business_type, project_state, naics_code, fips_code)%>%
- summarize(
-   count= n()
- )%>%
-  arrange(desc(count))
-  
-  
-  
-#add fips code to ppp, join them, generate top 10 industries by number of applications, join cbp and ppp by naics, remove self-employed individuals and sole proprietorships
-
-
-
 all_fips <- fips_codes %>% as_tibble()
 ar_fips <- all_fips %>% filter(state == 'AR')
 ar_fips <- ar_fips %>% mutate(fips_code = str_c(state_code, county_code))
 ar_fips <- ar_fips %>% mutate(match_county = str_to_upper(county)) %>%
    mutate(match_county = str_replace(match_county, ' COUNTY', '')) %>%
    mutate(match_county = str_replace(match_county, "'", "")) 
+
+ar_ppp_fips<-ar_ppp%>%
+  left_join(ar_fips, by=c('project_county_name'='match_county'))
+
+naics_ar<-ar_ppp_fips%>%
+group_by(naics_code, fips_code)%>%
+ summarize(
+   count= n())
+
+top_ten_industries<-naics_ar%>%
+group_by(naics_code, fips_code)%>%
+ summarize(
+   count= n()
+ )%>%
+  arrange(desc(count))%>%
+  head(10)
+
+
+
+  cbp%>%
+  left_join(ar_ppp, by = c("naics"="naics_code"))
+  
+#add fips code to ppp, join them, generate top 10 industries by number of applications, join cbp and ppp by naics, remove self-employed individuals and sole proprietorships
+
+
+
 
 
 
