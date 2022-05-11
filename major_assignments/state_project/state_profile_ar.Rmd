@@ -172,14 +172,16 @@ ar_ppp_fips<-ar_ppp%>%
 naics_ar<-ar_ppp_fips%>%
 group_by(naics_code, fips_code)%>%
  summarize(
-   count= n())
+   count= n())%>%
+arrange(desc(count))%>%
+  head(10)
 
 top_ten_industries<-naics_ar%>%
-group_by(naics_code, fips_code)%>%
- summarize(
+ group_by(naics_code, fips_code)%>%
+arrange(desc(count))%>%
+   summarize(
    count= n()
  )%>%
-  arrange(desc(count))%>%
   head(10)
 
 
