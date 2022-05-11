@@ -162,8 +162,16 @@ cbp <- read_rds("ar_cbp.rds")
 ar_ppp_fips<-ar_ppp%>%
   left_join(ar_fips, by=c('project_county_name'='match_county'))
 
-ar_ppp_fips
-
+ar_ppp_fips%>%
+filter(project_state == "AR")%>%
+group_by(business_type, project_state, naics_code, fips_code)%>%
+ summarize(
+   count= n()
+ )%>%
+  arrange(desc(count))
+  
+  
+  
 #add fips code to ppp, join them, generate top 10 industries by number of applications, join cbp and ppp by naics, remove self-employed individuals and sole proprietorships
 
 
@@ -183,7 +191,7 @@ ar_counties %>%
   geom_sf() + 
   theme_minimal()
 
-#pre lab 7
+#pre lab 7,10
 ```
 
 **A4.** 
