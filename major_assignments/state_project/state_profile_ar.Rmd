@@ -93,9 +93,7 @@ mutate(COUNTY = toupper(str_remove_all(COUNTY,", Arkansas|County")))%>%
  
  
 ak_ppp%>%
-  
-  
-  mutate(loans_per_100k= total_ppp_loans/population*100000)%>%
+  mutate(per_capita_100k= total_ppp_loans/population*100000)%>%
   
   
   ar_counties %>%
