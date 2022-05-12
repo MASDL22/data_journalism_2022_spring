@@ -92,7 +92,7 @@ mutate(COUNTY = toupper(str_remove_all(COUNTY,", Arkansas|County")))%>%
  mutate(COUNTY = str_trim(COUNTY,side="both"))
  
  
-ak_ppp%>%
+ar_ppp%>%
   mutate(per_capita_100k= total_ppp_loans/population*100000)%>%
   
   
@@ -201,11 +201,12 @@ arrange(desc(count))%>%
 
   ar_naics_cbp<-ar_ppp%>%
   inner_join(cbp, by = "naics_code")%>%
+    get_dupes()%>%
 select(naics_code,project_county_name,business_type)
   
     
 ar_naics_cbp%>%
-  remove(business_type=="Sole Proprietorship","Self-Employed Individuals")
+  remove(business_type=="Sole Proprietorship","Self-Employed Individuals")%>%
 summarize(
 count = n()
     ) 
