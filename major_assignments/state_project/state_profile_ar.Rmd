@@ -86,15 +86,16 @@ ar_county_population <- ar_county_population %>%
   rename(population = estimate) %>%
   select(COUNTY, population, geometry)
 
-ar_counties%>%
-mutate(NAMELSAD = toupper(str_remove_all(NAMELSAD,", Arkansas|County")))%>% 
- mutate(NAMELSAD = str_trim(NAMELSAD,side="both"))
+ar_counties<-ar_counties%>%
+  rename(COUNTY = NAME) %>%
+mutate(COUNTY = toupper(str_remove_all(COUNTY,", Arkansas|County")))%>% 
+ mutate(COUNTY = str_trim(COUNTY,side="both"))
  
  
 ak_ppp%>%
   
   
-  mutate(per_capita = ((july_2018-july_2017)/july_2017)*10000)
+  mutate(loans_per_100k= total_ppp_loans/population*100000)%>%
   
   
   ar_counties %>%
@@ -163,10 +164,11 @@ Create a county-level map showing the differences between the PPP applications a
 ```{r}
 cbp <- read_rds("ar_cbp.rds")
 
-cbp%>%
-  mutate(across(naics, as.character))
+cbp<-cbp%>%
+  mutate(across(naics, as.character))%>%
+  rename(naics_code=naics)
 
-ar_ppp%>%
+ar_ppp<-ar_ppp%>%
  mutate(across(naics_code, as.character))
 
 
@@ -200,7 +202,15 @@ arrange(desc(count))%>%
 
 
   ar_naics_cbp<-ar_ppp%>%
-  left_join(cbp, by = c("naics_code"="naics"))
+  inner_join(cbp, by = "naics_code")%>%
+select(naics_code,project_county_name,business_type)
+  
+    
+ar_naics_cbp%>%
+  remove(business_type=="Sole Proprietorship","Self-Employed Individuals")
+summarize(
+count = n()
+    ) 
   
 #add fips code to ppp, join them, generate top 10 industries by number of applications, join cbp and ppp by naics, remove self-employed individuals and sole proprietorships
 
