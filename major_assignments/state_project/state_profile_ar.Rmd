@@ -19,6 +19,7 @@ library(tidyverse)
 library(tidycensus)
 library(rvest)
 library(sf)
+library(refinr)
 library(ggthemes)
 library(janitor)
 library(tigris)
@@ -92,7 +93,8 @@ mutate(COUNTY = toupper(str_remove_all(COUNTY,", Arkansas|County")))%>%
  mutate(COUNTY = str_trim(COUNTY,side="both"))
  
  
-ar_ppp%>%
+ar_ppp_counties<-ar_ppp%>%
+  left_join(ar_county_population, by = c ("project_county_name"="COUNTY"))%>%
   mutate(per_capita_100k= total_ppp_loans/population*100000)%>%
   
   
@@ -161,11 +163,29 @@ Does the distribution of PPP applications by the top 10 industries (by number of
 Create a county-level map showing the differences between the PPP applications and the Census business data for one of the top 10 industry codes. You can do this either using ggplot or Datawrapper (if the latter, publish that map and include the URL below).
 ```{r}
 cbp <- read_rds("ar_cbp.rds")
+naics_codes <- read_csv('data/naics_codes.csv')%>%
+mutate(across(naics_code, as.character))
 
-cbp<-cbp%>%
-  mutate(across(naics, as.character))%>%
-  rename(naics_code=naics)
+cbp_naics<-cbp%>%
+  filter(fipstate=="05")%>%
+mutate(across(naics, as.character))%>%
+left_join(naics_codes, by= c("naics"="naics_code"))%>%
+ filter(!is.na(title))%>% 
+select(naics,title,est,fipscty)%>%
 
+  
+  cbp_naics%>%
+  group_by(naics,title)%>%
+ summarize(
+   count= sum(est))%>%
+arrange(desc(count))%>%
+ head(10)
+
+
+
+
+
+    
 ar_ppp<-ar_ppp%>%
  mutate(across(naics_code, as.character))
 
@@ -180,50 +200,71 @@ ar_fips <- ar_fips %>% mutate(match_county = str_to_upper(county)) %>%
 ar_ppp_fips<-ar_ppp%>%
   left_join(ar_fips, by=c('project_county_name'='match_county'))
 
-naics_and_fips<-ar_ppp_fips%>%
-  group_by(naics_code,fips_code)%>%
+ar_ppp_fips%>%
+left_join(naics_codes, by ="naics_code")%>%
+group_by(naics_code, title)%>%
   summarize(
    count= n())%>%
-arrange(desc(count))
+  arrange(desc(count))%>%
+ head(10)
 
-naics_ar<-ar_ppp_fips%>%
-group_by(naics_code)%>%
- summarize(
+
+
+
+  ar_naics_cbp<-cbp%>%
+  inner_join(ar_ppp, by = "naics_code")%>%
+select(naics_code,project_county_name,business_type)%>%
+ 
+  ar_ppp_fips%>%
+left_join(naics_codes, by ="naics_code")%>%
+  filter(jobs_retained >= 2)%>%
+group_by(naics_code, title)%>%
+  summarize(
    count= n())%>%
-arrange(desc(count))
-
-top_ten_industries<-naics_ar%>%
- group_by(naics_code)%>%
-arrange(desc(count))%>%
-  head(10)
-
-
-
-  ar_naics_cbp<-ar_ppp%>%
-  inner_join(cbp, by = "naics_code")%>%
-    get_dupes()%>%
-select(naics_code,project_county_name,business_type)
+  arrange(desc(count))%>%
+ head(10)
   
-    
-ar_naics_cbp%>%
-  remove(business_type=="Sole Proprietorship","Self-Employed Individuals")%>%
-summarize(
-count = n()
-    ) 
   
 #add fips code to ppp, join them, generate top 10 industries by number of applications, join cbp and ppp by naics, remove self-employed individuals and sole proprietorships
 
+cbp%>%
+filter(naics %in% ar_ppp_fips$naics_code)%>%
+  left_join(naics_codes, by=c("naics"="naics_code"))%>%
+group_by(naics, title)%>%
+  summarize(
+   count= sum(est))%>%
+  arrange(desc(count))%>%
+ head(10)
 
-
-
-
-
-
+county_summary<-ar_ppp_counties%>%
+left_join(naics_codes)%>%
+ filter(naics_codes=="813110")%>% 
+  group_by(project_county_name)%>%
+  summarise(
+    count=n()
+  )%>%
+    ungroup()%>%
+    left_join(ar_counties, by="geometry")
+    
+  cbp_naics<-cbp%>%
+  filter(fipstate=="05")%>%
+  filter(naics=="813110")%>%
+  group_by(fipscty)%>%
+  summarise(
+    count=sum(est)
+  )%>%
+  left_join(ar_counties,by="geometry")%>%
+    
+  cbp_naics%>%
+  left_join(county_summary, by)  
+    
 ar_counties %>%
   ggplot() + 
   geom_sf() + 
   theme_minimal()
 
+
+#813110
 #pre lab 7,10
 ```
 
