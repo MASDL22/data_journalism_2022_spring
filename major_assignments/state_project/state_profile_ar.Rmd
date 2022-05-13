@@ -264,7 +264,7 @@ left_join(naics_codes)%>%
   left_join(ar_counties,by="geometry")%>%
     
   cbp_naics%>%
-  left_join(county_summary, by)  
+  left_join(county_summary, by="geometry")  
     
 ar_counties %>%
   ggplot() + 
@@ -276,7 +276,7 @@ ar_counties %>%
 #pre lab 7,10
 ```
 
-**A4.** This question was very difficult to answer since I couldn't get the data frames to join together to make a map but I still got the answers to the top 10 industries in the PPP and CBP data frames. According to the PPP data frame, the top 10 industries were as follows
+**A4.** This question was very difficult to answer since I couldn't get the data frames to join together to make a map and I wanted to plot religious Organizations on a map but once again, I couldn't get a map up;but I still got the answers to the top 10 industries in the PPP and CBP data frames. According to the PPP data frame, the top 10 industries were as follows
 112111	Beef Cattle Ranching and Farming	6292		
 812112	Beauty Salons	4490		
 722511	Full-Service Restaurants	2674		
@@ -320,4 +320,4 @@ It appears that the PPP and CBP data frames disagree with which industries got t
 
 **Q5.** What is the most promising story idea that you have found during this exploration? How would you approach reporting it out and what other information/data would you need to do that? What would be the minimum story you could get from this, and what would be the maximum story?
 
-**A5.**I think that the most interesting thing that I found during this project was the amount of loans religious groups got when PPP loans were being given out. Seeing how religious organizations climbed up the ranks as the PPP and CBP data frames were being analyzed, I figure we could visit some of the organizations and see how they operate; we would probably need to see how much money they use to either help their place of worship or help the community and their members as well. I'd probably try and see which religious group asked for more money and ask why they need that much.We could also view where the religious group is located (rural/urban) and see if one area got more loans than the other. As someone who is religious, the minimum story I could possibly do is probably a feature story about a specific group who got a loan and seeing how they manage their money in their place of worship. For the maximum story, I would most likely have an enterprise like story where we'd analyze the financial differences between one religious group and another to see what they asked for in their applications and if they received the amount they were expecting, got more than expected, or less than expected. We could also see if there one religious group got more loans than another and explore why that could be. There is also the chance to look at how each religious group spent the money from the PPP loans and if it helped them get through the Pandemic or did it not help as much as they thought it would've. 
+**A5.**I think that the most interesting thing that I found during this project was the amount of loans religious groups got when PPP loans were being given out. Seeing how religious organizations climbed up the ranks as the PPP and CBP data frames were being analyzed, I figure we could visit some of the organizations and see how they operate; we would probably need to see how much money they use to either help their place of worship or help the community and their members as well. I'd probably try and see which religious group asked for more money and ask why they need that much. We could also view where the religious group is located (rural/urban) and see if one area got more loans than the other. As someone who is religious, the minimum story I could possibly do is probably a feature story about a specific group who got a loan and seeing how they manage their money in their place of worship. For the maximum story, I would most likely have an enterprise like story where we'd analyze the financial differences between one religious group and another to see what they asked for in their applications and if they received the amount they were expecting, got more than expected, or less than expected. We could also see if there one religious group got more loans than another and explore why that could be. There is also the chance to look at how each religious group spent the money from the PPP loans and if it helped them get through the Pandemic or did it not help as much as they thought it would've. 
