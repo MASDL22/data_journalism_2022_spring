@@ -38,14 +38,15 @@ ar_ppp<-read_csv("arkansas_ppp.csv")
 ```{r}
 ar_ppp<-ar_ppp%>%
   mutate(zip = str_sub(zip, start=1L, end=5L))%>%
+  filter(zip<=72999)%>%
   summarise(count=name)
-#102,042 applications
+#102,039 applications
  
 ar_ppp%>%
  filter(veteran =="Unanswered")%>%
  filter(gender=="Unanswered")%>%
   filter(race=="Unanswered")
-#out of the 102,042 applications, 61,594 applications answered "Unanswered" to veteran, gender, and race
+#out of the 102,039 applications, 61,594 applications answered "Unanswered" to veteran, gender, and race
 
 zip_ar<-ar_ppp%>%
  mutate(zip = str_sub(zip, start=1L, end=5L))
@@ -61,9 +62,15 @@ male_owned_ppp<-ar_ppp%>%
   filter(business_type =="Non-Profit Organization")%>%
   head(10)%>%
     arrange(desc(amount))#Out of all Male Owned Non Profit Organizations, the top 10 industries who received PPP loans are often industries who give to the community or religious services but the top industry was a used merchandise store. 
+
+rural_ar<-ar_ppp%>%
+filter(rural_urban_indicator=="R")#63270 out of 102,039
+
+urban_ar<-ar_ppp%>%
+  filter(rural_urban_indicator=="U")#38772 out of 102,039
 ```
 
-**A1.** 
+**A1.** When I first started creating the data frame for Arkansas' PPP Loans, I saw that it had 102,042 applications throughout the state which I thought made a bit of sense as Arkansas might not have as many businesses as other states in the U.S. Something that piqued my curiosity was the veteran column of the data frame and how it seemed that many businesses didn't answer that specific part of their application. To add a bit more information on the data, I went ahead and added gender and race to the mix and see how many businesses decided to decline answering the question. To my surprise, 61,594 businesses didn't answer any of the three categories. I expected to be about 30,000 or so applications so it took my interest even further on things like gender. I wanted to confirm if the number of loans in Arkansas was 102,042 so I decided to check on Google what zip codes Arkansas would have. FOr the most part it would begin with 72 so I went ahead and added code to show if any loans had a zip code of 73000 or higher. Turned that there were three loans that did and the one that got 66,250 dollars in loans was BARNEY BELLECI DBA STATE FARM and when I looked it up, it was all the way in California and it even lacked a NAICS code. I realized I needed to clean my data frame a bit and it turned out that Arkansas had 102,039 loans instead of 102,042. The other two loans came from Arizona and Oklahoma which did not help my data frame at all. I went ahead and decided to take a look at all the male owned businesses in the state and see how many received a loan for their business. 25,742 male owned businesses got a PPP loan which then had me wonder how many businesses identified themselves as a Non Profit organization in their applications. I was able to narrow the list down to the top 10 businesses that got the highest loans in amount which happened to be a business called Potter's House 98. This organization got 511,421.90 in loan money which prompted me to review where the place was and type of business it is. What I found wasn't what I expected; it looked like a residence or one of those homes that was converted into an office for a couple of businesses. Google said it was either a thrift store or an academy for young children which seems to be the more logical answer. Yet, if it was an academy for young children, wouldn't they had done most of their teaching online during the pandemic? How did they get all that money from the PPP loan? Arkansas is within the Central U.S. so I wanted to confirm whether or not more rural or urban areas applied for a PPP loan. My guess was that rural areas got more loans than urban areas and unsurprisingly I was correct. 63,270 PPP loan applications identified the business in a rural area while 38,772 identified it in an urban area. What was interesting throughout my reasearch was that a lot of loans were going to religious organizations or organizations meant to help give back to the community. Almost every other application was from a religious group or from an organization that helps the community in some way. The religious groups could be something worth looking into. 
 
 
 ## Geographic Analysis
@@ -95,26 +102,28 @@ mutate(COUNTY = toupper(str_remove_all(COUNTY,", Arkansas|County")))%>%
  
 ar_ppp_counties<-ar_ppp%>%
   left_join(ar_county_population, by = c ("project_county_name"="COUNTY"))%>%
-  mutate(per_capita_100k= total_ppp_loans/population*100000)%>%
-  
-  
+   mutate(per_capita_100k= population/10000)
+
+ar_ppp_counties%>%
+arrange(desc(per_capita_100k))%>%
+head(10)
+
   ar_counties %>%
-  ggplot() + 
-  geom_sf() + 
+  ggplot() +
+   geom_sf(data = ar_counties) +
+  geom_sf(data = ar_ppp_counties)+
   theme_minimal()
   #Pre lab 8, 11
   #11/75 have pop less than 10,000
 ```
 
-**A2.** 
+**A2.** I did struggle a bit on this question like getting the state and zip code information and creating a map to show the differences between the three. However, I did find somethings worth noting. 11 out of the 75 counties in Arkansas had a population less than 10,000 which had me concerned over how the per capita would work. However 10,000 was a good number to do since I did try 100,000 first and didn't look right to me. When calculating the per capita in Arkansas counties, the top 10 counties with the most loans per capita based on the PPP data frame all were located in Pulaski county. I looked up where this county was and turns out that Pulaski county is located in Little Rock, Arkansas, the capital of the state. This might not be a surprise for those who live in Arkansas but seeing that Pulaski county has the most people in it makes a bit of sense that many of the PPP loans given would be for Little Rock. 
 
 ## Lender Analysis
 
 **Q3.** Write R code to examine which lenders had the most approved applications in your state (and include summary statistics such as total amount and average loan amount). Generate dataframes that show the number and total amount of all loans and undisbursed loans per lender. For those lenders who had any undisbursed loans, make a graphic showing the relationship between the total amount of loans and the total undisbursed amount. Describe the most noticeable outlier lenders on that graphic below.#make graphic showing the relationship between lenders and loan amounts showing how many loans each lender issued for each amount in the dataframe. Describe the most noticeable outlier lenders on that graphic.
 ```{r}
 lender_ar<-ar_ppp%>%
-  
-lender_ar%>%
 group_by(state, lender, amount, originating_lender_city, originating_lender_state)%>%
 filter(state=="AR")%>%
   summarise(
@@ -151,8 +160,7 @@ amount_lend %>%
 #pre lab 5, 9
 ```
 
-**A3.** 
-
+**A3.** Arkansas' top lenders had a range of about 20,833 dollars in PPP loan money which seemed a bit odd to me that some lenders gave around the same amount as another. Prestamos CDFL, LLC gave out 1083 loans to businesses throughout the states. This lender is located in Phoenix, Arizona which is an interesting a lender like them are lending out PPP loans to people in Arkansas. Perhaps there's a very small Hispanic business within the state that asked for a PPP loan from them?Harvest Small Business Finance, LLC gave 1012 loans that totaled 20,833 dollars. First Security Bank gave the least amount in dollars; they only gave 20,800 dollars but gave the second least amount of loans by giving 278 of them. However, an outlier to the loans was a lender by the name of Arvest Bank. This bank is located in Bentonville, Arkansas and it tailors to Arkansas, Kansas, Oklahoma, and Missouri which apparently is where Walmart began. It's one of the largest banks in the U.S. and gave out 41,665 dollars in loans despite only giving 628 loans to businesses in Arkansas. 
 
 ## Industry Analysis
 
@@ -268,10 +276,48 @@ ar_counties %>%
 #pre lab 7,10
 ```
 
-**A4.** 
+**A4.** This question was very difficult to answer since I couldn't get the data frames to join together to make a map but I still got the answers to the top 10 industries in the PPP and CBP data frames. According to the PPP data frame, the top 10 industries were as follows
+112111	Beef Cattle Ranching and Farming	6292		
+812112	Beauty Salons	4490		
+722511	Full-Service Restaurants	2674		
+531210	Offices of Real Estate Agents and Brokers	1944		
+111110	Soybean Farming	1728		
+484110	General Freight Trucking, Local	1553		
+561730	Landscaping Services	1514		
+484121	General Freight Trucking, Long-Distance, Truckload	1498		
+524210	Insurance Agencies and Brokerages	1496		
+561720	Janitorial Services 1478
 
+I was sure that religious groups would be somewhere at the top since Arkansas is known to be conservative and lean towards being a  Republican state; so I wondered if getting rid of the self-employed individuals and sole proprietorships would change how it looked. To my surprise, I was correct in my assumption that Religious groups would be in the top 10 industries. 
+
+722511	Full-Service Restaurants	2475		
+621210	Offices of Dentists	1163		
+813110	Religious Organizations	1145		
+721110	Hotels (except Casino Hotels) and Motels	986		
+621111	Offices of Physicians (except Mental Health Specialists)	919		
+111110	Soybean Farming	907		
+541110	Offices of Lawyers	891		
+722513	Limited-Service Restaurants	846		
+238220	Plumbing, Heating, and Air-Conditioning Contractors	802		
+524210	Insurance Agencies and Brokerages	741	
+
+This made my previous assumption of Religious Groups getting more loans than other industries somewhat correct. The CBP dataframe further proved my assumption was correct.
+
+813110	Religious Organizations	2686		
+722513	Limited-Service Restaurants	2139		
+722511	Full-Service Restaurants	2045		
+621111	Offices of Physicians (except Mental Health Specialists)	1999		
+524210	Insurance Agencies and Brokerages	1495		
+522110	Commercial Banking	1418		
+447110	Gasoline Stations with Convenience Stores	1365		
+541110	Offices of Lawyers	1333		
+551114	Corporate, Subsidiary, and Regional Managing Offices	1032		
+238220	Plumbing, Heating, and Air-Conditioning Contractors	963		
+
+It appears that the PPP and CBP data frames disagree with which industries got the most loans based on the number of applications. It makes you wonder how their methods of collecting data is different and how did they come up with very different answers to the data. They seem to agree that food, farming, or businesses within the state are in the top 10 industries. They just can't seem to agree which business is the top one or anything below that. I had thought it would be almost the same but I was completely wrong with that. 
 ## Summary
+
 
 **Q5.** What is the most promising story idea that you have found during this exploration? How would you approach reporting it out and what other information/data would you need to do that? What would be the minimum story you could get from this, and what would be the maximum story?
 
-**A5.**
+**A5.**I think that the most interesting thing that I found during this project was the amount of loans religious groups got when PPP loans were being given out. Seeing how religious organizations climbed up the ranks as the PPP and CBP data frames were being analyzed, I figure we could visit some of the organizations and see how they operate; we would probably need to see how much money they use to either help their place of worship or help the community and their members as well. I'd probably try and see which religious group asked for more money and ask why they need that much.We could also view where the religious group is located (rural/urban) and see if one area got more loans than the other. As someone who is religious, the minimum story I could possibly do is probably a feature story about a specific group who got a loan and seeing how they manage their money in their place of worship. For the maximum story, I would most likely have an enterprise like story where we'd analyze the financial differences between one religious group and another to see what they asked for in their applications and if they received the amount they were expecting, got more than expected, or less than expected. We could also see if there one religious group got more loans than another and explore why that could be. There is also the chance to look at how each religious group spent the money from the PPP loans and if it helped them get through the Pandemic or did it not help as much as they thought it would've. 
